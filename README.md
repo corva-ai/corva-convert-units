@@ -116,119 +116,18 @@ convert().list('mass')
 */
 ```
 
-Supported Units
----------------
-### Length
-
-* mm
-* cm
-* m
-* in
-* ft
-* mi
-
-### Area
-
-* mm2
-* cm2
-* m2
-* ha
-* km2
-* in2
-* ft2
-* ac
-* mi2
-
-### Mass
-
- * mcg
- * mg
- * g
- * kg
- * oz
- * lb
-
-### Volume
-
- * mm3
- * cm3
- * ml
- * l
- * m3
- * km3
- * tsp
- * tbsp
- * in3
- * fl-oz
- * cup
- * pnt
- * qt
- * gal
- * ft3
- * yd3
-
-### Temperature
-
- * C
- * F
- * K
-
-### Time
-
-  * ns
-  * mu
-  * ms
-  * s
-  * min
-  * h
-  * d
-  * week
-  * month
-  * year
-
-### Speed
-
-  * m/s
-  * km/h
-  * m/h
-  * knot
-  * ft/s
-
-### Pressure
-  * Pa
-  * hPa
-  * kPa
-  * MPa
-  * bar
-  * torr
-  * psi
-  * ksi
-
-### Digital
-  * b
-  * Kb
-  * Mb
-  * Gb
-  * Tb
-  * B
-  * KB
-  * MB
-  * GB
-  * TB
-
-### Parts-Per
-  * ppm
-  * ppb
-  * ppt
-  * ppq
-
 ### Want More?
 
 Adding new measurement sets is easy. Take a look at [`lib/definitions`](https://github.com/ben-ng/convert-units/tree/master/lib/definitions) to see how it's done.
 
+### Fork/Duplication Information
+
+This was forked by Corva to add support for things needed internally.
+Credit goes to Ben Ng as the original developer/maintainer of this module.
+
 License
 -------
-Copyright (c) 2013-2017 Ben Ng and Contributors, http://benng.me
+Copyright (c) 2013-2017 Corva <corva.ai>, Ben Ng, and Contributors, http://benng.me
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
