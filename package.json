@@ -1,13 +1,12 @@
 {
   "name": "corva-convert-units",
   "version": "1.0.0",
-  "private": true,
   "description": "Convert between quantities in different units",
   "main": "lib",
   "dependencies": {
     "lodash.keys": "2.3.x",
     "lodash.foreach": "2.3.x"
   },
-  "author": "Corva, Ben Ng <me@benng.me> (http://benng.me)",
+  "author": "Corva.ai, Ben Ng <me@benng.me> (http://benng.me)",
   "license": "MIT"
 }
