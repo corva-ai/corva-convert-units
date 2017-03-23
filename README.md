@@ -1,124 +1,7 @@
 convert-units
 =============
 
-[![Build Status](https://travis-ci.org/ben-ng/convert-units.png)](https://travis-ci.org/ben-ng/convert-units) [![Downloads](https://img.shields.io/npm/dm/convert-units.svg)](https://www.npmjs.com/package/convert-units)
-
 A handy utility for converting between quantities in different units.
-
-Usage
------
-
-`convert-units` has a simple chained API that is easy to read.
-
-Here's how you move between the metric units for volume:
-
-```js
-var convert = require('convert-units')
-
-convert(1).from('l').to('ml')
-// 1000
-```
-
-Jump from imperial to metric units the same way:
-
-```js
-convert(1).from('lb').to('kg')
-// 0.4536... (tested to 4 significant figures)
-```
-
-Just be careful not to ask for an impossible conversion:
-
-```js
-convert(1).from('oz').to('fl-oz')
-// throws -- you can't go from mass to volume!
-```
-
-You can ask `convert-units` to select the best unit for you with optional exclusions:
-```js
-convert(1200).from('mm').toBest()
-// 1.2 Meters (the smallest unit with a value above 1)
-
-convert(1200).from('mm').toBest({exclude: ['m']})
-// 120 Centimeters (the smallest unit excluding meters)
-```
-
-You can get a list of the measurement types supported with `.measures`
-
-```js
-convert().measures()
-// [ 'length', 'mass', 'volume' ]
-```
-
-If you ever want to know the possible conversions for a unit, just use `.possibilities`
-
-```js
-convert().from('l').possibilities()
-// [ 'ml', 'l', 'tsp', 'tbsp', 'fl-oz', 'cup', 'pnt', 'qt', 'gal' ]
-
-convert().from('kg').possibilities()
-// [ 'mcg', 'mg', 'g', 'kg', 'oz', 'lb' ]
-```
-
-You can also get the possible conversions for a measure:
-```js
-convert().possibilities('mass')
-// [ 'mcg', 'mg', 'g', 'kg', 'oz', 'lb' ]
-```
-
-You can also get the all the available units:
-```js
-convert().possibilities()
-// [ 'mm', 'cm', 'm', 'in', 'ft', 'mi', 'mcg', 'mg', 'g', 'kg', 'oz', 'lb', 'ml', 'l', 'tsp', 'Tbs', 'fl-oz', 'cup', 'pnt', 'qt', 'gal', 'ea' ];
-```
-
-To get a detailed description of a unit, use `describe`
-
-```js
-convert().describe('kg')
-/*
-  {
-    abbr: 'kg'
-  , measure: 'mass'
-  , system: 'metric'
-  , singular: 'Kilogram'
-  , plural: 'Kilograms'
-  }
-*/
-```
-
-To get detailed descriptions of all units, use `list`.
-
-```js
-convert().list()
-/*
-  [{
-    abbr: 'kg'
-  , measure: 'mass'
-  , system: 'metric'
-  , singular: 'Kilogram'
-  , plural: 'Kilograms'
-  }, ...]
-*/
-```
-
-You can also get detailed descriptions of all units for a measure:
-
-```js
-convert().list('mass')
-/*
-  [{
-    abbr: 'kg'
-  , measure: 'mass'
-  , system: 'metric'
-  , singular: 'Kilogram'
-  , plural: 'Kilograms'
-  }, ...]
-*/
-```
-
-### Want More?
-
-Adding new measurement sets is easy. Take a look at [`lib/definitions`](https://github.com/ben-ng/convert-units/tree/master/lib/definitions) to see how it's done.
 
 ### Fork/Duplication Information
 
@@ -127,7 +10,7 @@ Credit goes to Ben Ng as the original developer/maintainer of this module.
 
 License
 -------
-Copyright (c) 2013-2017 Corva <corva.ai>, Ben Ng, and Contributors, http://benng.me
+Copyright (c) 2013-2017 Corva http://corva.ai ; Ben Ng, and Contributors, http://benng.me
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
