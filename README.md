@@ -10,7 +10,7 @@ Credit goes to Ben Ng as the original developer/maintainer of this module.
 
 License
 -------
-Copyright (c) 2013-2017 Corva http://corva.ai ; Ben Ng, and Contributors, http://benng.me
+Copyright (c) 2013-2017 Corva http://corva.ai ; Ben Ng, Jasper Miles, and Contributors, http://benng.me
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation

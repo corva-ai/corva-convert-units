@@ -7,6 +7,6 @@
     "lodash.keys": "2.3.x",
     "lodash.foreach": "2.3.x"
   },
-  "author": "Corva.ai, Ben Ng <me@benng.me> (http://benng.me)",
+  "author": "Corva.ai, Ben Ng <me@benng.me> (http://benng.me), Jasper Miles",
   "license": "MIT"
 }
