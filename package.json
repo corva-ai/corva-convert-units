@@ -1,6 +1,6 @@
 {
   "name": "corva-convert-units",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "description": "Convert between quantities in different units",
   "main": "lib",
   "dependencies": {
