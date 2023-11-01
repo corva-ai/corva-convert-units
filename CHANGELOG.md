@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/corva-ai/corva-convert-units/compare/v1.11.1...v1.12.0) (2023-11-01)
+
+
+### Features
+
+* **GEO-5511:** adds kilonewton ([#31](https://github.com/corva-ai/corva-convert-units/issues/31)) ([97e5343](https://github.com/corva-ai/corva-convert-units/commit/97e53433e9d60cc5a8a46547756f588eab3c5bde))
+
 ## [1.11.1](https://github.com/corva-ai/corva-convert-units/compare/v1.11.0...v1.11.1) (2023-09-22)
 
 
