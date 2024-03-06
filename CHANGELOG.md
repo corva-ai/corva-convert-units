@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/corva-ai/corva-convert-units/compare/v1.13.0...v1.14.0) (2024-03-06)
+
+
+### Features
+
+* **PLT-722:** Added gas flow rate units ([#36](https://github.com/corva-ai/corva-convert-units/issues/36)) ([c0bd1ba](https://github.com/corva-ai/corva-convert-units/commit/c0bd1baa081e13b794d4c7d97bbcaf11c093c89f))
+
 ## [1.13.0](https://github.com/corva-ai/corva-convert-units/compare/v1.12.0...v1.13.0) (2024-02-20)
 
 
