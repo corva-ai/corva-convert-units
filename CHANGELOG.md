@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/corva-ai/corva-convert-units/compare/v1.14.0...v1.15.0) (2024-05-23)
+
+
+### Features
+
+* **dri-992:** add proportion, strokesRate unit types ([#38](https://github.com/corva-ai/corva-convert-units/issues/38)) ([98e7b87](https://github.com/corva-ai/corva-convert-units/commit/98e7b872b3ee27d24e9acd359e086c90c8f46d7f))
+
 ## [1.14.0](https://github.com/corva-ai/corva-convert-units/compare/v1.13.0...v1.14.0) (2024-03-06)
 
 
