@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/corva-ai/corva-convert-units/compare/v1.15.1...v1.16.0) (2024-05-31)
+
+
+### Features
+
+* **dri-1031:** add the ability to support measure (unit group) ([#42](https://github.com/corva-ai/corva-convert-units/issues/42)) ([fe33f34](https://github.com/corva-ai/corva-convert-units/commit/fe33f342aaa70d817c0700e77f5a19a6123696aa))
+
 ## [1.15.1](https://github.com/corva-ai/corva-convert-units/compare/v1.15.0...v1.15.1) (2024-05-27)
 
 
