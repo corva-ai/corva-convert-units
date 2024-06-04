@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/corva-ai/corva-convert-units/compare/v1.16.0...v1.16.1) (2024-06-04)
+
+
+### Bug Fixes
+
+* **dri-1031:** update index.d.ts, revert incompatible measures error ([#44](https://github.com/corva-ai/corva-convert-units/issues/44)) ([4643f8c](https://github.com/corva-ai/corva-convert-units/commit/4643f8cb40a25cbe35619b09a6667a32e871a54a))
+
 ## [1.16.0](https://github.com/corva-ai/corva-convert-units/compare/v1.15.1...v1.16.0) (2024-05-31)
 
 
