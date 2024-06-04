@@ -15,6 +15,7 @@ declare namespace convert {
     throwUnsupportedUnitError(what: string): void;
     throwUnsupportedMeasureError(what: string): void;
     throwUnsupportedCompatibilityError(abbr: Unit['abbr'], measure: string): void;
+    throwIncompatibleMeasuresError(destinationMeasure: string, originMeasure: string): void;
     possibilities(measure: string | undefined): string[];
   }
 
