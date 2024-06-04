@@ -1,19 +1,21 @@
-declare function convert(value: unknown): convert.Converter;
+declare function convert(value: unknown, measure?: string): convert.Converter;
 
 declare namespace convert {
   export class Converter {
-    constructor(numerator: number, denominator: number);
+    constructor(numerator: number, measure?: string);
     val: number;
+    measure: string | undefined;
     from(from: string): this;
     to(to: string): number;
     toBest(options?: { exclude: string[] } | null): ConversionResult;
     measures(): string[];
-    getUnit(abbr: string): Unit | undefined;
-    getUnitForPair(abbrOne: string, abbrTwo: string): [Unit, Unit] | null;
+    getUnit(abbr: string, measure: string | undefined): Unit | undefined;
     describe(abbr: string): PlainUnit;
-    list(measure: string): PlainUnit[];
+    list(measure: string | undefined): PlainUnit[];
     throwUnsupportedUnitError(what: string): void;
-    possibilities(measure: string): string[];
+    throwUnsupportedMeasureError(what: string): void;
+    throwUnsupportedCompatibilityError(abbr: Unit['abbr'], measure: string): void;
+    possibilities(measure: string | undefined): string[];
   }
 
   export type PlainUnit = UnitNames & Omit<Unit, "unit">;
