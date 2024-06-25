@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/corva-ai/corva-convert-units/compare/v1.16.1...v1.17.0) (2024-06-25)
+
+
+### Features
+
+* **dri-1102:** add gammaRadiation definition with API unit ([#47](https://github.com/corva-ai/corva-convert-units/issues/47)) ([32e97bb](https://github.com/corva-ai/corva-convert-units/commit/32e97bb4d229da17ad31f14d4bfdbf045b4b3fba))
+
 ## [1.16.1](https://github.com/corva-ai/corva-convert-units/compare/v1.16.0...v1.16.1) (2024-06-04)
 
 
