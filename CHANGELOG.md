@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.0](https://github.com/corva-ai/corva-convert-units/compare/v1.17.0...v1.18.0) (2024-07-01)
+
+
+### Features
+
+* **FUS-1057:** expand library with new units ([#46](https://github.com/corva-ai/corva-convert-units/issues/46)) ([6201ecd](https://github.com/corva-ai/corva-convert-units/commit/6201ecd3e81d38fd26ba8e6571ab869e89ae5192))
+
 ## [1.17.0](https://github.com/corva-ai/corva-convert-units/compare/v1.16.1...v1.17.0) (2024-06-25)
 
 
