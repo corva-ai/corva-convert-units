@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.1](https://github.com/corva-ai/corva-convert-units/compare/v1.18.0...v1.18.1) (2024-07-08)
+
+
+### Bug Fixes
+
+* **dri-1031:** revert getUnitForPair ([#50](https://github.com/corva-ai/corva-convert-units/issues/50)) ([b40b6a1](https://github.com/corva-ai/corva-convert-units/commit/b40b6a142f02016a53bd55f4fdab5ffa243a8680))
+
 ## [1.18.0](https://github.com/corva-ai/corva-convert-units/compare/v1.17.0...v1.18.0) (2024-07-01)
 
 
