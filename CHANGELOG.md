@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.19.0](https://github.com/corva-ai/corva-convert-units/compare/v1.18.1...v1.19.0) (2024-08-09)
+
+
+### Features
+
+* **DRI-1234:** added new aliases ([#54](https://github.com/corva-ai/corva-convert-units/issues/54)) ([f5c8377](https://github.com/corva-ai/corva-convert-units/commit/f5c8377df4cb367048bfc72d1d021a008935acb7))
+* **FUS-1116:** add method to convert alias into unit key ([#52](https://github.com/corva-ai/corva-convert-units/issues/52)) ([6716de3](https://github.com/corva-ai/corva-convert-units/commit/6716de31b6fbcf10b1496f3283cb28d5ca4caebf))
+
 ## [1.18.1](https://github.com/corva-ai/corva-convert-units/compare/v1.18.0...v1.18.1) (2024-07-08)
 
 
