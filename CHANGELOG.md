@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.0](https://github.com/corva-ai/corva-convert-units/compare/v1.19.0...v1.20.0) (2024-08-09)
+
+
+### Features
+
+* **DEVC-1119:** minor change ([#55](https://github.com/corva-ai/corva-convert-units/issues/55)) ([22690ab](https://github.com/corva-ai/corva-convert-units/commit/22690ab2c98b22c254137ac1d303d292a5f2a2e5))
+
 ## [1.19.0](https://github.com/corva-ai/corva-convert-units/compare/v1.18.1...v1.19.0) (2024-08-09)
 
 
