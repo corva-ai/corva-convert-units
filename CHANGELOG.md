@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.21.0](https://github.com/corva-ai/corva-convert-units/compare/v1.20.0...v1.21.0) (2024-08-22)
+
+
+### Features
+
+* **dri-1308:** add unitless unit ([#59](https://github.com/corva-ai/corva-convert-units/issues/59)) ([a9d5a40](https://github.com/corva-ai/corva-convert-units/commit/a9d5a40870763876995094ec15d2a4e2289bbfa6))
+
+
+### Bug Fixes
+
+* **FUS-1208:** fix unit name ([#57](https://github.com/corva-ai/corva-convert-units/issues/57)) ([52b2481](https://github.com/corva-ai/corva-convert-units/commit/52b248191e9462cbe0d2c7374ae6ee13fa34b94e))
+
 ## [1.20.0](https://github.com/corva-ai/corva-convert-units/compare/v1.19.0...v1.20.0) (2024-08-09)
 
 
