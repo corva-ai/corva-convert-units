@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.0](https://github.com/corva-ai/corva-convert-units/compare/v1.21.0...v1.22.0) (2024-08-22)
+
+
+### Features
+
+* **DRI-1301:** Add aliases for energy and volume flow rate measurements ([#60](https://github.com/corva-ai/corva-convert-units/issues/60)) ([1b348c9](https://github.com/corva-ai/corva-convert-units/commit/1b348c9b0a69228254f4a0fcf08fce86630cae9f))
+
 ## [1.21.0](https://github.com/corva-ai/corva-convert-units/compare/v1.20.0...v1.21.0) (2024-08-22)
 
 
