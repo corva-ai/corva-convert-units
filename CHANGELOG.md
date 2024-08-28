@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.0](https://github.com/corva-ai/corva-convert-units/compare/v1.22.0...v1.23.0) (2024-08-28)
+
+
+### Features
+
+* **DRI-1301:** update tests, make code babel friendly ([#62](https://github.com/corva-ai/corva-convert-units/issues/62)) ([ff75e1d](https://github.com/corva-ai/corva-convert-units/commit/ff75e1d8532b4c8fae465c2a1ba3c53aa531944b))
+
 ## [1.22.0](https://github.com/corva-ai/corva-convert-units/compare/v1.21.0...v1.22.0) (2024-08-22)
 
 
