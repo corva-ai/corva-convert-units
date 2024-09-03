@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.0](https://github.com/corva-ai/corva-convert-units/compare/v1.23.0...v1.24.0) (2024-09-03)
+
+
+### Features
+
+* **DRI-1303:** Added more aliases for units ([#65](https://github.com/corva-ai/corva-convert-units/issues/65)) ([c64b438](https://github.com/corva-ai/corva-convert-units/commit/c64b438403ddbd5f43c3b34993c63db59da17ec0))
+
 ## [1.23.0](https://github.com/corva-ai/corva-convert-units/compare/v1.22.0...v1.23.0) (2024-08-28)
 
 
