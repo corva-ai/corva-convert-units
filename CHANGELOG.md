@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.0](https://github.com/corva-ai/corva-convert-units/compare/v1.24.0...v1.25.0) (2024-11-12)
+
+
+### Features
+
+* **DRI-1529:** add more aliases - empty commit to trigger CI release & fix the previous commit message ([c26fa8c](https://github.com/corva-ai/corva-convert-units/commit/c26fa8ca2184fc603c3f25e91603f3525d187b77))
+
 ## [1.24.0](https://github.com/corva-ai/corva-convert-units/compare/v1.23.0...v1.24.0) (2024-09-03)
 
 
