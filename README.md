@@ -8,6 +8,22 @@ A handy utility for converting between quantities in different units.
 This was forked by Corva to add support for things needed internally.
 Credit goes to Ben Ng as the original developer/maintainer of this module.
 
+### Contribution
+
+#### Releasing changes
+
+- Create a PR, merge it to `master` branch
+- CI will create a version bump & changelog update pull request
+- Merge this auto-generated release PR
+- CI will publish the new version to NPM + make a GitHub release
+
+#### Testing changes
+
+If local package linking is not enough - you can publish a test version of your branch package. 
+To do so - you need to manually dispatch the publish GitHub action selecting your branch
+
+This job will publish a test version to NPM, the version will look like 0.0.0-[hash] 
+
 License
 -------
 Copyright (c) 2013-2017 Corva http://corva.ai ; Ben Ng, Jasper Miles, and Contributors, http://benng.me
