@@ -1,19 +1,28 @@
+name: Release
+
 on:
   push:
     branches:
       - master
 
-permissions:
-  contents: write
-  pull-requests: write
-
-name: release-please
-
 jobs:
   release-please:
-    runs-on: ubuntu-latest
+    name: Release Please
+    runs-on: ubuntu-24.04
     steps:
-      - uses: google-github-actions/release-please-action@v3
+      - name: Load secrets from 1Password
+        uses: 1password/load-secrets-action@v2.0.0
+        id: secrets
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN_RO }}
+          #
+          GH_ACTIONS_AUTOMATION: 'op://GitHub.Actions/GitHub/Tokens/GH_ACTIONS_AUTOMATION'
+      - name: Release Please
+        uses: googleapis/release-please-action@v4.1.3
         with:
           release-type: node
-          package-name: release-please-action
+          target-branch: master
+          # TODO: for some reason, this does not work with corva-bot
+          token: ${{ steps.secrets.outputs.GH_ACTIONS_AUTOMATION }}

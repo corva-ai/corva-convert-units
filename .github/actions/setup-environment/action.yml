@@ -1,0 +1,21 @@
+name: "Setup Environment"
+
+description: "Setup build environment and NodeJS"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node environment
+      uses: actions/setup-node@v4.0.3
+      with:
+        node-version-file: '.nvmrc'
+    - name: Cache NodeJS dependencies
+      uses: actions/cache@v4.0.2
+      id: nodejs-cache
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-${{ runner.arch }}-yarn-${{ hashFiles('./yarn.lock') }}
+    - name: Install NodeJS dependencies
+      shell: bash
+      if: ${{ steps.nodejs-cache.outputs.cache-hit != 'true' }}
+      run: yarn install --frozen-lockfile
