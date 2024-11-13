@@ -1,0 +1,36 @@
+name: 'Publish'
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Load secrets from 1Password
+        uses: 1password/load-secrets-action@v2.0.0
+        id: secrets
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN_RO }}
+          #
+          PUBLISH_NPM_TOKEN_DEV: 'op://GitHub.Actions/NPM/PUBLISH_NPM_TOKEN_DEV'
+      - name: Checkout sources
+        uses: actions/checkout@v4.1.7
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+      - name: Setup Environment
+        uses: ./.github/actions/setup-environment
+      - name: Publish
+        uses: corva-ai/gh-actions/common/run-script@develop
+        env:
+          TAG: '${{ github.ref_name }}'
+          NPM_TOKEN: '${{ steps.secrets.outputs.PUBLISH_NPM_TOKEN_DEV }}'
+          WORKING_DIRECTORY: '.'
+        with:
+          script-name: 'publish.mjs'
