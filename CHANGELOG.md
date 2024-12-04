@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.0](https://github.com/corva-ai/corva-convert-units/compare/v1.25.1...v1.26.0) (2024-12-04)
+
+
+### Features
+
+* **DRI-1588:** changed unit naming ([#70](https://github.com/corva-ai/corva-convert-units/issues/70)) ([323ddc1](https://github.com/corva-ai/corva-convert-units/commit/323ddc18a8f4e439221b48736f6c8f136f40587b))
+
 ## [1.25.1](https://github.com/corva-ai/corva-convert-units/compare/v1.25.0...v1.25.1) (2024-12-04)
 
 
