@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.1](https://github.com/corva-ai/corva-convert-units/compare/v1.25.0...v1.25.1) (2024-12-04)
+
+
+### Bug Fixes
+
+* **cmpl-4115:** change ratio for volumeConcentration ([#71](https://github.com/corva-ai/corva-convert-units/issues/71)) ([abb39a0](https://github.com/corva-ai/corva-convert-units/commit/abb39a02b626464f87805b85eb07a235e0e09293))
+
 ## [1.25.0](https://github.com/corva-ai/corva-convert-units/compare/v1.24.0...v1.25.0) (2024-11-12)
 
 
