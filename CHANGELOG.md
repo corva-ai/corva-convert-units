@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.27.0](https://github.com/corva-ai/corva-convert-units/compare/v1.26.0...v1.27.0) (2024-12-09)
+
+
+### Features
+
+* **DRI-1588:** changed only display section ([#74](https://github.com/corva-ai/corva-convert-units/issues/74)) ([565c3de](https://github.com/corva-ai/corva-convert-units/commit/565c3de76a7f4b4d2d4e08770ced724f908831f9))
+
 ## [1.26.0](https://github.com/corva-ai/corva-convert-units/compare/v1.25.1...v1.26.0) (2024-12-04)
 
 
