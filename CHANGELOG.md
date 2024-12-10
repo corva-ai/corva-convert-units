@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.0](https://github.com/corva-ai/corva-convert-units/compare/v1.27.0...v1.28.0) (2024-12-10)
+
+
+### Features
+
+* **DRI-1588:** added kft-lbf to alliases ([#76](https://github.com/corva-ai/corva-convert-units/issues/76)) ([a1b40c6](https://github.com/corva-ai/corva-convert-units/commit/a1b40c6298c441fd36213802439c1399253362b4))
+
 ## [1.27.0](https://github.com/corva-ai/corva-convert-units/compare/v1.26.0...v1.27.0) (2024-12-09)
 
 
