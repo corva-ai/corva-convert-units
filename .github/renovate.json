@@ -1,0 +1,10 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>corva-ai/corva-renovate//presets/schedule",
+    "github>corva-ai/corva-renovate//presets/settings",
+    "github>corva-ai/corva-renovate//presets/labels",
+    "github>corva-ai/corva-renovate//presets/github-actions"
+  ],
+  "dependencyDashboardApproval": true
+}
