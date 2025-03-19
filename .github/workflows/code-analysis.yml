@@ -32,20 +32,20 @@ jobs:
           APP_ID: 'op://GitHub.Actions/GitHub/corva-bot/APP_ID'
           PRIVATE_KEY: 'op://GitHub.Actions/GitHub/corva-bot/PRIVATE_KEY'
       - name: Checkout sources
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.2
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
       - name: Setup Environment
         uses: ./.github/actions/setup-environment
       - name: Cache ESLint
-        uses: actions/cache@v4.0.2
+        uses: actions/cache@v4.2.2
         with:
           path: .eslintcache
           key: ${{ runner.os }}-eslint-${{ hashFiles('./yarn.lock') }}-${{ hashFiles('./.eslint*') }}
       - name: Lint
         run: yarn lint
       - name: Generate GitHub token
-        uses: actions/create-github-app-token@v1.10.4
+        uses: actions/create-github-app-token@v1.11.6
         if: ${{ success() || failure() }}
         id: token
         with:
@@ -76,20 +76,20 @@ jobs:
           APP_ID: 'op://GitHub.Actions/GitHub/corva-bot/APP_ID'
           PRIVATE_KEY: 'op://GitHub.Actions/GitHub/corva-bot/PRIVATE_KEY'
       - name: Checkout sources
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4.2.2
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
       - name: Setup Environment
         uses: ./.github/actions/setup-environment
       - name: Cache Jest
-        uses: actions/cache@v4.0.2
+        uses: actions/cache@v4.2.2
         with:
           path: ./node_modules/.cache/jest
           key: ${{ runner.os }}-jest-${{ hashFiles('./yarn.lock') }}
       - name: Test
         run: yarn test
       - name: Generate GitHub token
-        uses: actions/create-github-app-token@v1.10.4
+        uses: actions/create-github-app-token@v1.11.6
         if: ${{ success() || failure() }}
         id: token
         with:
