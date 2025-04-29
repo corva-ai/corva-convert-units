@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.29.0](https://github.com/corva-ai/corva-convert-units/compare/v1.28.1...v1.29.0) (2025-04-29)
+
+
+### Features
+
+* **DRA-3765:** add new aliases ([#89](https://github.com/corva-ai/corva-convert-units/issues/89)) ([48eec35](https://github.com/corva-ai/corva-convert-units/commit/48eec350ef38e7c398f425815ce0a04f5cd80cf5))
+* **EE-275:** added new aliases ([#80](https://github.com/corva-ai/corva-convert-units/issues/80)) ([2d1b88a](https://github.com/corva-ai/corva-convert-units/commit/2d1b88a682a905f0e97f147c16fb248d800f550a))
+
 ## [1.28.1](https://github.com/corva-ai/corva-convert-units/compare/v1.28.0...v1.28.1) (2024-12-10)
 
 
