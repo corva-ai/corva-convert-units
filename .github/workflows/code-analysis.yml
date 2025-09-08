@@ -38,7 +38,7 @@ jobs:
       - name: Setup Environment
         uses: ./.github/actions/setup-environment
       - name: Cache ESLint
-        uses: actions/cache@v4.2.2
+        uses: actions/cache@v4.2.4
         with:
           path: .eslintcache
           key: ${{ runner.os }}-eslint-${{ hashFiles('./yarn.lock') }}-${{ hashFiles('./.eslint*') }}
@@ -82,7 +82,7 @@ jobs:
       - name: Setup Environment
         uses: ./.github/actions/setup-environment
       - name: Cache Jest
-        uses: actions/cache@v4.2.2
+        uses: actions/cache@v4.2.4
         with:
           path: ./node_modules/.cache/jest
           key: ${{ runner.os }}-jest-${{ hashFiles('./yarn.lock') }}
