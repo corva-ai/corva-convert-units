@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.30.0](https://github.com/corva-ai/corva-convert-units/compare/v1.29.0...v1.30.0) (2025-09-08)
+
+
+### Features
+
+* **DRA-4525:** add gravity unit ([#90](https://github.com/corva-ai/corva-convert-units/issues/90)) ([14d0676](https://github.com/corva-ai/corva-convert-units/commit/14d067620388302bb6e09406c10e39627239fdf3))
+
 ## [1.29.0](https://github.com/corva-ai/corva-convert-units/compare/v1.28.1...v1.29.0) (2025-04-29)
 
 
