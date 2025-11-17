@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.31.0](https://github.com/corva-ai/corva-convert-units/compare/v1.30.0...v1.31.0) (2025-11-17)
+
+
+### Features
+
+* [CMPL-5020] add lbm support ([#92](https://github.com/corva-ai/corva-convert-units/issues/92)) ([6a0b439](https://github.com/corva-ai/corva-convert-units/commit/6a0b439baa16f671f7adab65c8d4265e143d8c5a))
+
 ## [1.30.0](https://github.com/corva-ai/corva-convert-units/compare/v1.29.0...v1.30.0) (2025-09-08)
 
 
