@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.0](https://github.com/corva-ai/corva-convert-units/compare/v1.31.0...v1.32.0) (2025-11-26)
+
+
+### Features
+
+* add survey length unit type [DIR-589]  ([#94](https://github.com/corva-ai/corva-convert-units/issues/94)) ([8e27934](https://github.com/corva-ai/corva-convert-units/commit/8e279348411b05e05b26b211fc18c063676455b4))
+
 ## [1.31.0](https://github.com/corva-ai/corva-convert-units/compare/v1.30.0...v1.31.0) (2025-11-17)
 
 
