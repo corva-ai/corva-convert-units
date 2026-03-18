@@ -3,10 +3,11 @@ from __future__ import annotations
 import logging
 from typing import Any, Optional
 
-from .loader import load_definitions
+from .loader import load_bucket_mapping, load_definitions
 
 _definitions: dict[str, dict[str, Any]] | None = None
 _alias_cache: dict[str, str] | None = None
+_bucket_mapping: dict[str, Any] | None = None
 
 
 def _get_definitions() -> dict[str, dict[str, Any]]:
@@ -207,6 +208,144 @@ def list_units(measure: Optional[str] = None) -> list[dict[str, Any]]:
     return result
 
 
+def list_units_with_aliases(
+    measure: Optional[str] = None,
+) -> list[dict[str, Any]]:
+    """Return list of units with aliases, optionally filtered by measure."""
+    definitions = _get_definitions()
+    result: list[dict[str, Any]] = []
+
+    for measure_name, systems in definitions.items():
+        if measure and measure != measure_name:
+            continue
+        for system_name, units in systems.items():
+            if system_name == "_anchors":
+                continue
+            if not isinstance(units, dict):
+                continue
+            for abbr, unit in units.items():
+                if not isinstance(unit, dict):
+                    continue
+                result.append({
+                    "abbr": abbr,
+                    "measure": measure_name,
+                    "system": system_name,
+                    "singular": unit["name"]["singular"],
+                    "plural": unit["name"]["plural"],
+                    "display": unit["name"]["display"],
+                    "aliases": unit.get("aliases", []),
+                })
+
+    return result
+
+
+def possibilities(measure: Optional[str] = None) -> list[str]:
+    """Return list of unit abbreviations, optionally filtered by measure."""
+    definitions = _get_definitions()
+    result: list[str] = []
+
+    for measure_name, systems in definitions.items():
+        if measure and measure != measure_name:
+            continue
+        for system_name, units in systems.items():
+            if system_name == "_anchors":
+                continue
+            if not isinstance(units, dict):
+                continue
+            result.extend(units.keys())
+
+    return result
+
+
+def get_unit_key_by_alias(alias: str) -> Optional[str]:
+    """Resolve an alias to its canonical unit key."""
+    return _build_alias_cache().get(alias)
+
+
+def get_unit_for_pair(
+    abbr_one: str, abbr_two: str,
+) -> Optional[tuple[dict[str, Any], dict[str, Any]]]:
+    """Find two units within the same measure by their abbreviations."""
+    definitions = _get_definitions()
+
+    for measure_name, systems in definitions.items():
+        found_one: Optional[dict[str, Any]] = None
+        found_two: Optional[dict[str, Any]] = None
+
+        for system_name, units in systems.items():
+            if system_name == "_anchors":
+                continue
+            if not isinstance(units, dict):
+                continue
+            for test_abbr, unit in units.items():
+                if test_abbr == abbr_one:
+                    found_one = {
+                        "abbr": abbr_one,
+                        "measure": measure_name,
+                        "system": system_name,
+                        "unit": unit,
+                    }
+                elif test_abbr == abbr_two:
+                    found_two = {
+                        "abbr": abbr_two,
+                        "measure": measure_name,
+                        "system": system_name,
+                        "unit": unit,
+                    }
+                if found_one and found_two:
+                    break
+            if found_one and found_two:
+                break
+
+        if found_one and found_two:
+            return (found_one, found_two)
+
+    return None
+
+
+def bucket_mapping() -> dict[str, Any]:
+    """Return the unit bucket mapping."""
+    global _bucket_mapping
+    if _bucket_mapping is None:
+        _bucket_mapping = load_bucket_mapping()
+    return _bucket_mapping
+
+
+def to_best(
+    value: float,
+    unit_from: str,
+    measure: Optional[str] = None,
+    exclude: Optional[list[str]] = None,
+) -> Optional[dict[str, Any]]:
+    """Convert to the 'best' unit — smallest value >= 1 in the same system."""
+    origin = get_unit(unit_from, measure)
+    if not origin:
+        return None
+
+    exclude = exclude or []
+    best: Optional[dict[str, Any]] = None
+
+    for abbr in possibilities(origin["measure"]):
+        if abbr in exclude:
+            continue
+        unit_info = describe(abbr, origin["measure"])
+        if not unit_info or unit_info["system"] != origin["system"]:
+            continue
+        result = convert(value, unit_from, abbr, origin["measure"])
+        if result is None:
+            continue
+        if best is None or (result >= 1 and result < best["val"]):
+            best = {
+                "val": result,
+                "unit": abbr,
+                "singular": unit_info["singular"],
+                "plural": unit_info["plural"],
+                "display": unit_info["display"],
+            }
+
+    return best
+
+
 class Converter:
     """Backward-compatible class wrapper around the functional API."""
 
@@ -238,3 +377,36 @@ class Converter:
     @staticmethod
     def list_units(measure: Optional[str] = None) -> list[dict[str, Any]]:
         return list_units(measure)
+
+    @staticmethod
+    def list_units_with_aliases(
+        measure: Optional[str] = None,
+    ) -> list[dict[str, Any]]:
+        return list_units_with_aliases(measure)
+
+    @staticmethod
+    def possibilities(measure: Optional[str] = None) -> list[str]:
+        return possibilities(measure)
+
+    @staticmethod
+    def get_unit_key_by_alias(alias: str) -> Optional[str]:
+        return get_unit_key_by_alias(alias)
+
+    @staticmethod
+    def get_unit_for_pair(
+        abbr_one: str, abbr_two: str,
+    ) -> Optional[tuple[dict[str, Any], dict[str, Any]]]:
+        return get_unit_for_pair(abbr_one, abbr_two)
+
+    @staticmethod
+    def bucket_mapping() -> dict[str, Any]:
+        return bucket_mapping()
+
+    @staticmethod
+    def to_best(
+        value: float,
+        unit_from: str,
+        measure: Optional[str] = None,
+        exclude: Optional[list[str]] = None,
+    ) -> Optional[dict[str, Any]]:
+        return to_best(value, unit_from, measure, exclude)

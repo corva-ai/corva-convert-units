@@ -296,3 +296,174 @@ class TestRoundTrip:
         back = convert(intermediate, unit_to, unit_from)
         assert back is not None
         assert back == pytest.approx(value, rel=1e-4)
+
+
+# ---------------------------------------------------------------------------
+# Possibilities
+# ---------------------------------------------------------------------------
+
+class TestPossibilities:
+    def test_all_possibilities(self):
+        from corva_unit_converter import possibilities
+
+        result = possibilities()
+        assert isinstance(result, list)
+        assert len(result) > 100
+        assert "m" in result
+        assert "ft" in result
+        assert "psi" in result
+
+    def test_filtered_by_measure(self):
+        from corva_unit_converter import possibilities
+
+        result = possibilities("length")
+        assert "m" in result
+        assert "ft" in result
+        assert "psi" not in result
+
+    def test_unknown_measure_returns_empty(self):
+        from corva_unit_converter import possibilities
+
+        assert possibilities("nonexistent") == []
+
+
+# ---------------------------------------------------------------------------
+# List units with aliases
+# ---------------------------------------------------------------------------
+
+class TestListUnitsWithAliases:
+    def test_returns_aliases(self):
+        from corva_unit_converter import list_units_with_aliases
+
+        result = list_units_with_aliases("length")
+        assert len(result) > 0
+        for item in result:
+            assert "aliases" in item
+            assert isinstance(item["aliases"], list)
+
+    def test_unit_key_in_aliases(self):
+        from corva_unit_converter import list_units_with_aliases
+
+        result = list_units_with_aliases("length")
+        for item in result:
+            assert item["abbr"] in item["aliases"]
+
+
+# ---------------------------------------------------------------------------
+# Get unit key by alias
+# ---------------------------------------------------------------------------
+
+class TestGetUnitKeyByAlias:
+    def test_exact_key(self):
+        from corva_unit_converter import get_unit_key_by_alias
+
+        assert get_unit_key_by_alias("m") == "m"
+
+    def test_alias_resolves(self):
+        from corva_unit_converter import get_unit_key_by_alias
+
+        assert get_unit_key_by_alias("meter") == "m"
+
+    def test_unknown_returns_none(self):
+        from corva_unit_converter import get_unit_key_by_alias
+
+        assert get_unit_key_by_alias("nonexistent_xyz") is None
+
+
+# ---------------------------------------------------------------------------
+# Get unit for pair
+# ---------------------------------------------------------------------------
+
+class TestGetUnitForPair:
+    def test_same_measure(self):
+        from corva_unit_converter import get_unit_for_pair
+
+        result = get_unit_for_pair("ft", "m")
+        assert result is not None
+        assert result[0]["abbr"] == "ft"
+        assert result[1]["abbr"] == "m"
+        assert result[0]["measure"] == result[1]["measure"]
+
+    def test_no_common_measure(self):
+        from corva_unit_converter import get_unit_for_pair
+
+        result = get_unit_for_pair("ft", "psi")
+        assert result is None
+
+
+# ---------------------------------------------------------------------------
+# Bucket mapping
+# ---------------------------------------------------------------------------
+
+class TestBucketMapping:
+    def test_returns_dict(self):
+        from corva_unit_converter import bucket_mapping
+
+        result = bucket_mapping()
+        assert isinstance(result, dict)
+        assert len(result) > 0
+
+
+# ---------------------------------------------------------------------------
+# To best
+# ---------------------------------------------------------------------------
+
+class TestToBest:
+    def test_converts_to_best(self):
+        from corva_unit_converter import to_best
+
+        result = to_best(1200000, "mm")
+        assert result is not None
+        assert result["val"] == pytest.approx(1.2, rel=1e-4)
+        assert result["unit"] == "km"
+
+    def test_invalid_unit_returns_none(self):
+        from corva_unit_converter import to_best
+
+        assert to_best(1, "xyz_invalid") is None
+
+    def test_stays_in_same_system(self):
+        from corva_unit_converter import to_best
+
+        result = to_best(5280, "ft")
+        assert result is not None
+        assert result["unit"] == "mi"
+
+
+# ---------------------------------------------------------------------------
+# Converter class — new methods
+# ---------------------------------------------------------------------------
+
+class TestConverterClassNewMethods:
+    def test_possibilities(self):
+        c = Converter()
+        result = c.possibilities("length")
+        assert "m" in result
+        assert "ft" in result
+
+    def test_list_units_with_aliases(self):
+        c = Converter()
+        result = c.list_units_with_aliases("length")
+        assert len(result) > 0
+        assert "aliases" in result[0]
+
+    def test_get_unit_key_by_alias(self):
+        c = Converter()
+        assert c.get_unit_key_by_alias("meter") == "m"
+
+    def test_get_unit_for_pair(self):
+        c = Converter()
+        result = c.get_unit_for_pair("ft", "m")
+        assert result is not None
+
+    def test_bucket_mapping(self):
+        c = Converter()
+        result = c.bucket_mapping()
+        assert isinstance(result, dict)
+        assert len(result) > 0
+
+    def test_to_best(self):
+        c = Converter()
+        result = c.to_best(1200000, "mm")
+        assert result is not None
+        assert result["unit"] == "km"
