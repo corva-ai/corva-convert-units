@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.33.0](https://github.com/corva-ai/corva-convert-units/compare/v1.32.0...v1.33.0) (2026-03-18)
+
+
+### Features
+
+* **DRA-5291:** add alias units  mse & resistivity plus default alias support ([#96](https://github.com/corva-ai/corva-convert-units/issues/96)) ([fdda5be](https://github.com/corva-ai/corva-convert-units/commit/fdda5be9741f57eff95d88bb0a71f70853648071))
+
 ## [1.32.0](https://github.com/corva-ai/corva-convert-units/compare/v1.31.0...v1.32.0) (2025-11-26)
 
 
