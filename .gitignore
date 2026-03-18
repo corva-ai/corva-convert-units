@@ -1,5 +1,11 @@
-.DS_Store
-node_modules
-*.log
-*.swp
-.idea
+node_modules/
+dist/
+js/definitions/
+py/src/corva_unit_converter/definitions/
+*.pyc
+__pycache__/
+*.egg-info/
+build/
+.pytest_cache/
+.mypy_cache/
+.venv/

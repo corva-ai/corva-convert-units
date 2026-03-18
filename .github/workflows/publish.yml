@@ -3,12 +3,14 @@ name: 'Publish'
 on:
   push:
     tags:
-      - 'v*'
+      - 'js-v*'
+      - 'py-v*'
   workflow_dispatch:
 
 jobs:
-  publish:
-    name: Publish
+  publish-js:
+    name: Publish JS
+    if: startsWith(github.ref_name, 'js-v') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     steps:
       - name: Load secrets from 1Password
@@ -18,19 +20,43 @@ jobs:
           export-env: false
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN_RO }}
-          #
           PUBLISH_NPM_TOKEN_DEV: 'op://GitHub.Actions/NPM/PUBLISH_NPM_TOKEN_DEV'
       - name: Checkout sources
-        uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        uses: actions/checkout@v4.2.2
       - name: Setup Environment
         uses: ./.github/actions/setup-environment
+      - name: Sync definitions
+        run: bash scripts/sync-definitions.sh
+      - name: Build
+        run: cd js && npm run build
       - name: Publish
         uses: corva-ai/gh-actions/common/run-script@develop
         env:
           TAG: '${{ github.ref_name }}'
           NPM_TOKEN: '${{ steps.secrets.outputs.PUBLISH_NPM_TOKEN_DEV }}'
-          WORKING_DIRECTORY: '.'
+          WORKING_DIRECTORY: 'js'
         with:
           script-name: 'publish.mjs'
+
+  publish-py:
+    name: Publish Python
+    if: startsWith(github.ref_name, 'py-v')
+    runs-on: ubuntu-24.04
+    environment: pypi
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4.2.2
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Sync definitions
+        run: bash scripts/sync-definitions.sh
+      - name: Install build tools
+        run: pip install build
+      - name: Build
+        run: cd py && python -m build
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: py/dist/

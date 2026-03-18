@@ -1,0 +1,9 @@
+name: 'Sync Definitions'
+description: 'Copies shared JSON definitions into language-specific source directories'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Sync definitions
+      shell: bash
+      run: bash scripts/sync-definitions.sh

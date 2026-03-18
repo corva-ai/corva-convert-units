@@ -1,0 +1,22 @@
+{
+  "packages": {
+    "js": {
+      "release-type": "node",
+      "component": "js"
+    },
+    "py": {
+      "release-type": "python",
+      "component": "py",
+      "package-name": "corva-unit-converter"
+    }
+  },
+  "plugins": [
+    {
+      "type": "linked-versions",
+      "groupName": "corva-convert-units",
+      "components": ["js", "py"]
+    }
+  ],
+  "group-pull-request-title-pattern": "chore: release v${version}",
+  "include-component-in-tag": true
+}

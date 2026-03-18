@@ -1,50 +1,104 @@
-convert-units
-=============
+# corva-convert-units
 
-A handy utility for converting between quantities in different units.
+Monorepo for unit conversion libraries used by Corva. A single set of shared JSON definitions powers both the JavaScript/TypeScript and Python packages.
 
-### Fork/Duplication Information
+## Structure
 
-This was forked by Corva to add support for things needed internally.
-Credit goes to Ben Ng as the original developer/maintainer of this module.
+```
+definitions/     Shared JSON unit definitions (source of truth)
+js/              npm package: corva-convert-units
+py/              PyPI package: corva-unit-converter
+scripts/         Build and validation scripts
+```
 
-### Contribution
+## Packages
 
-#### Releasing changes
+| Package | Language | Registry | Install |
+|---------|----------|----------|---------|
+| `corva-convert-units` | TypeScript/JS | npm | `npm install corva-convert-units` |
+| `corva-unit-converter` | Python | PyPI | `pip install corva-unit-converter` |
 
-- Create a PR, merge it to `master` branch
-- CI will create a version bump & changelog update pull request
-- Merge this auto-generated release PR
-- CI will publish the new version to NPM + make a GitHub release
+Both packages are versioned together (currently v2.0.0).
 
-#### Testing changes
+## Usage
 
-If local package linking is not enough - you can publish a test version of your branch package. 
-To do so - you need to manually dispatch the publish GitHub action selecting your branch
+### JavaScript / TypeScript
 
-This job will publish a test version to NPM, the version will look like 0.0.0-[hash] 
+```typescript
+import { convert } from 'corva-convert-units';
 
-License
--------
-Copyright (c) 2013-2017 Corva http://corva.ai ; Ben Ng, Jasper Miles, and Contributors, http://benng.me
+// Direct conversion
+convert(1, 'ft', 'm');                // 0.3048
+convert(100, 'C', 'F');              // 212
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
+// Chained API
+convert(1).from('ft').to('m');       // 0.3048
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+// With explicit measure
+convert(1, 'ft', 'm', 'length');     // 0.3048
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
+// Utilities
+convert.measures();                   // ['length', 'pressure', ...]
+convert.describe('ft');               // { abbr: 'ft', measure: 'length', ... }
+convert.list('length');               // [{ abbr: 'mm', ... }, ...]
+convert.possibilities('length');      // ['mm', 'cm', 'm', 'km', ...]
+```
+
+### Python
+
+```python
+from corva_unit_converter import convert, get_measures, describe
+
+convert(1, 'ft', 'm')                    # 0.3048
+convert(100, 'C', 'F')                  # 212.0
+convert(1, 'ft', 'm', measure='length') # 0.3048
+
+get_measures()     # ['length', 'pressure', ...]
+describe('ft')     # {'abbr': 'ft', 'measure': 'length', ...}
+```
+
+## Development
+
+### Prerequisites
+
+- Node.js 24+ (see `.nvmrc`)
+- Python 3.9+
+- GNU Make
+
+### Setup
+
+```bash
+# JS
+cd js && npm install
+
+# Python
+cd py && pip install -e ".[test]"
+```
+
+### Commands
+
+```bash
+make sync-defs    # Copy JSON definitions into packages
+make test-js      # Run JS tests
+make test-py      # Run Python tests
+make test         # Run all tests
+make validate     # Validate JSON definition files
+make build-js     # Build JS package
+make build-py     # Build Python package
+make clean        # Remove build artifacts
+```
+
+### Adding a new unit
+
+1. Edit the JSON file in `definitions/` (or create a new one)
+2. Run `make sync-defs` to propagate changes
+3. Run `make test` to verify both packages
+4. The `formationDensity` measure is an alias for `density` (handled in loader code, not in JSON)
+
+## Release
+
+Both packages use [release-please](https://github.com/googleapis/release-please) with the `linked-versions` plugin. Merging to `master` creates a combined release PR. When merged, tags `js-v*` and `python-v*` trigger separate publish workflows to npm and PyPI.
+
+## License
+
+MIT

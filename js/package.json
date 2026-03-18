@@ -1,0 +1,31 @@
+{
+  "name": "corva-convert-units",
+  "version": "2.0.0",
+  "description": "Convert between quantities in different units",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist", "definitions"],
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "build": "tsc",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest"
+  },
+  "devDependencies": {
+    "typescript": "^5.8",
+    "@types/node": "^24",
+    "jest": "^30",
+    "ts-jest": "^29",
+    "@types/jest": "^29"
+  },
+  "author": "Corva.ai",
+  "license": "MIT"
+}
