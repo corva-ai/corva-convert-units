@@ -1,0 +1,106 @@
+{
+  "metric": {
+    "rad": {
+      "name": {
+        "singular": "radian",
+        "plural": "radians",
+        "display": "rad"
+      },
+      "to_anchor": 57.29577951308232,
+      "aliases": ["rad"]
+    },
+    "deg": {
+      "name": {
+        "singular": "degree",
+        "plural": "degrees",
+        "display": "deg"
+      },
+      "to_anchor": 1,
+      "aliases": ["deg", "dega", "degrees"]
+    },
+    "grad": {
+      "name": {
+        "singular": "gradian",
+        "plural": "gradians",
+        "display": "grad"
+      },
+      "to_anchor": 0.9,
+      "aliases": ["grad"]
+    },
+    "arcmin": {
+      "name": {
+        "singular": "arcminute",
+        "plural": "arcminutes",
+        "display": "arcmin"
+      },
+      "to_anchor": 0.016666666666666666,
+      "aliases": ["arcmin"]
+    },
+    "arcsec": {
+      "name": {
+        "singular": "arcsecond",
+        "plural": "arcseconds",
+        "display": "arcsec"
+      },
+      "to_anchor": 0.0002777777777777778,
+      "aliases": ["arcsec"]
+    }
+  },
+  "imperial": {
+    "rad": {
+      "name": {
+        "singular": "radian",
+        "plural": "radians",
+        "display": "rad"
+      },
+      "to_anchor": 57.29577951308232,
+      "aliases": ["rad"]
+    },
+    "deg": {
+      "name": {
+        "singular": "degree",
+        "plural": "degrees",
+        "display": "deg"
+      },
+      "to_anchor": 1,
+      "aliases": ["deg", "dega", "degrees"]
+    },
+    "grad": {
+      "name": {
+        "singular": "gradian",
+        "plural": "gradians",
+        "display": "grad"
+      },
+      "to_anchor": 0.9,
+      "aliases": ["grad"]
+    },
+    "arcmin": {
+      "name": {
+        "singular": "arcminute",
+        "plural": "arcminutes",
+        "display": "arcmin"
+      },
+      "to_anchor": 0.016666666666666666,
+      "aliases": ["arcmin"]
+    },
+    "arcsec": {
+      "name": {
+        "singular": "arcsecond",
+        "plural": "arcseconds",
+        "display": "arcsec"
+      },
+      "to_anchor": 0.0002777777777777778,
+      "aliases": ["arcsec"]
+    }
+  },
+  "_anchors": {
+    "metric": {
+      "unit": "deg",
+      "ratio": 1
+    },
+    "imperial": {
+      "unit": "deg",
+      "ratio": 1
+    }
+  }
+}

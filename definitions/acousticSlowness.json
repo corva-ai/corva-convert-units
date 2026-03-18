@@ -1,0 +1,34 @@
+{
+  "metric": {
+    "us/m": {
+      "name": {
+        "singular": "us/m",
+        "plural": "us/m",
+        "display": "us/m"
+      },
+      "to_anchor": 1,
+      "aliases": ["us/m"]
+    }
+  },
+  "imperial": {
+    "us/ft": {
+      "name": {
+        "singular": "us/ft",
+        "plural": "us/ft",
+        "display": "us/ft"
+      },
+      "to_anchor": 1,
+      "aliases": ["us/f", "us/ft"]
+    }
+  },
+  "_anchors": {
+    "metric": {
+      "unit": "us/m",
+      "ratio": 0.3047999902464003
+    },
+    "imperial": {
+      "unit": "us/ft",
+      "ratio": 3.28084
+    }
+  }
+}

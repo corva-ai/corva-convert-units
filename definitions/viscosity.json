@@ -1,0 +1,28 @@
+{
+  "metric": {
+    "mpas": {
+      "name": {
+        "singular": "Millipascal-second",
+        "plural": "Millipascal-seconds",
+        "display": "mPa\u00b7s"
+      },
+      "to_anchor": 1,
+      "aliases": ["mpas", "cP", "mPa\u00b7s", "mPa.s", "mPa*s"]
+    },
+    "pas": {
+      "name": {
+        "singular": "Pascal-second",
+        "plural": "Pascal-seconds",
+        "display": "Pa\u00b7s"
+      },
+      "to_anchor": 1000,
+      "aliases": ["pas", "Pa\u00b7s", "Pa.s", "Pa*s"]
+    }
+  },
+  "_anchors": {
+    "metric": {
+      "unit": "s",
+      "ratio": 1
+    }
+  }
+}

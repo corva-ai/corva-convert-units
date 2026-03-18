@@ -1,0 +1,20 @@
+{
+  "metric": {
+    "ea": {
+      "name": {
+        "singular": "Each",
+        "plural": "Each",
+        "display": "Each"
+      },
+      "to_anchor": 1,
+      "aliases": ["ea"]
+    }
+  },
+  "imperial": {},
+  "_anchors": {
+    "metric": {
+      "unit": "ea",
+      "ratio": 1
+    }
+  }
+}
