@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Load secrets from 1Password
-        uses: 1password/load-secrets-action@v2.0.0
+        uses: 1password/load-secrets-action@v3.0.0
         id: secrets
         with:
           export-env: false
@@ -32,7 +32,7 @@ jobs:
           APP_ID: 'op://GitHub.Actions/GitHub/corva-bot/APP_ID'
           PRIVATE_KEY: 'op://GitHub.Actions/GitHub/corva-bot/PRIVATE_KEY'
       - name: Checkout sources
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
       - name: Setup Environment
@@ -66,7 +66,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Load secrets from 1Password
-        uses: 1password/load-secrets-action@v2.0.0
+        uses: 1password/load-secrets-action@v3.0.0
         id: secrets
         with:
           export-env: false
@@ -76,7 +76,7 @@ jobs:
           APP_ID: 'op://GitHub.Actions/GitHub/corva-bot/APP_ID'
           PRIVATE_KEY: 'op://GitHub.Actions/GitHub/corva-bot/PRIVATE_KEY'
       - name: Checkout sources
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
       - name: Setup Environment
