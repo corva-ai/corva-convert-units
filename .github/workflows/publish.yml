@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Load secrets from 1Password
-        uses: 1password/load-secrets-action@v2.0.0
+        uses: 1password/load-secrets-action@v3.0.0
         id: secrets
         with:
           export-env: false
@@ -21,7 +21,7 @@ jobs:
           #
           PUBLISH_NPM_TOKEN_DEV: 'op://GitHub.Actions/NPM/PUBLISH_NPM_TOKEN_DEV'
       - name: Checkout sources
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
       - name: Setup Environment
