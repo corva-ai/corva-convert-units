@@ -78,11 +78,11 @@ cd py && pip install -e ".[test]"
 ### Commands
 
 ```bash
-make sync-defs    # Copy JSON definitions into packages
+make sync-defs    # Copy definitions into packages (local only; CI does this automatically)
 make test-js      # Run JS tests
 make test-py      # Run Python tests
-make test         # Run all tests
-make validate     # Validate JSON definition files
+make test         # Run all tests (includes sync-defs automatically)
+make validate     # Validate JSON definition files (also runs in CI on every PR)
 make build-js     # Build JS package
 make build-py     # Build Python package
 make clean        # Remove build artifacts
@@ -91,8 +91,7 @@ make clean        # Remove build artifacts
 ### Adding a new unit
 
 1. Edit the JSON file in `definitions/` (or create a new one)
-2. Run `make sync-defs` to propagate changes
-3. Run `make test` to verify both packages
+2. Run `make test` to verify both packages (syncs definitions automatically)
 4. The `formationDensity` measure is an alias for `density` (handled in loader code, not in JSON)
 
 ## Release
