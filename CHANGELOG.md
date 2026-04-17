@@ -1,3 +1,4 @@
+<!-- This file is no longer maintained. Starting from v2.0.0, changelogs are tracked separately per package: py/CHANGELOG.md and js/CHANGELOG.md. -->
 # Changelog
 
 ## [1.33.0](https://github.com/corva-ai/corva-convert-units/compare/v1.32.0...v1.33.0) (2026-03-18)
