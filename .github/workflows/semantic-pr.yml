@@ -1,15 +1,15 @@
-name: "Semantic PR"
+# name: "Semantic PR"
 
-on:
-  pull_request:
-    types:
-      - opened
-      - edited
-      - synchronize
+# on:
+#   pull_request:
+#     types:
+#       - opened
+#       - edited
+#       - synchronize
 
-jobs:
-  validate-pr:
-    # Required: GitHub repository using squash & merge strategy and option "Default to PR title for squash merge commits" is selected.
-    name: Validate PR title
-    uses: corva-ai/gh-actions/.github/workflows/workflow-semantic-pr.yml@develop
-    secrets: inherit
+# jobs:
+#   validate-pr:
+#     # Required: GitHub repository using squash & merge strategy and option "Default to PR title for squash merge commits" is selected.
+#     name: Validate PR title
+#     uses: corva-ai/gh-actions/.github/workflows/workflow-semantic-pr.yml@develop
+#     secrets: inherit
