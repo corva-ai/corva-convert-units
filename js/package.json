@@ -1,6 +1,6 @@
 {
   "name": "corva-convert-units",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Convert between quantities in different units",
   "type": "module",
   "main": "dist/index.cjs",
@@ -13,8 +13,13 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": ["dist", "definitions"],
-  "engines": { "node": ">=24" },
+  "files": [
+    "dist",
+    "definitions"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "build": "tsc",
     "test": "node --experimental-vm-modules node_modules/.bin/jest"
