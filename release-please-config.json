@@ -17,6 +17,5 @@
       "components": ["js", "py"]
     }
   ],
-  "group-pull-request-title-pattern": "chore: release v${version}",
   "include-component-in-tag": true
 }
