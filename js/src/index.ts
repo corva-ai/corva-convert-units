@@ -24,7 +24,7 @@ const bucketMapping = loadBucketMapping();
 let unitsByAlias: Record<string, string> | null = null;
 
 // ---------------------------------------------------------------------------
-// Internal helpers!
+// Internal helpers
 // ---------------------------------------------------------------------------
 
 function buildAliasMap(): Record<string, string> {
