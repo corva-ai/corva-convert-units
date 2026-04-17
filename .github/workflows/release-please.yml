@@ -15,7 +15,23 @@ jobs:
     name: Release Please
     runs-on: ubuntu-24.04
     steps:
+      - name: Load secrets from 1Password
+        uses: 1password/load-secrets-action@v3.0.0
+        id: secrets
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN_RO }}
+          APP_ID: 'op://GitHub.Actions/GitHub/corva-bot/APP_ID'
+          PRIVATE_KEY: 'op://GitHub.Actions/GitHub/corva-bot/PRIVATE_KEY'
+      - name: Generate GitHub token
+        uses: actions/create-github-app-token@v1.11.6
+        id: token
+        with:
+          app-id: ${{ steps.secrets.outputs.APP_ID }}
+          private-key: ${{ steps.secrets.outputs.PRIVATE_KEY }}
       - uses: googleapis/release-please-action@v4
         with:
+          token: ${{ steps.token.outputs.token }}
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
