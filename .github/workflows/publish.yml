@@ -45,6 +45,8 @@ jobs:
     if: startsWith(github.ref_name, 'py@v')
     runs-on: ubuntu-24.04
     environment: pypi
+    permissions:
+      id-token: write
     steps:
       - name: Checkout sources
         uses: actions/checkout@v5
