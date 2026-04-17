@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Load secrets from 1Password
-        uses: 1password/load-secrets-action@v3.0.0
+        uses: 1password/load-secrets-action@v3.2.1
         id: secrets
         with:
           export-env: false
@@ -51,7 +51,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.14'
       - name: Sync definitions
         run: bash scripts/sync-definitions.sh
       - name: Install build tools
