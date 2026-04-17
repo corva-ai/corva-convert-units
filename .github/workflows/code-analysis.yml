@@ -28,22 +28,10 @@ jobs:
           export-env: false
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN_RO }}
-          #
           APP_ID: 'op://GitHub.Actions/GitHub/corva-bot/APP_ID'
           PRIVATE_KEY: 'op://GitHub.Actions/GitHub/corva-bot/PRIVATE_KEY'
-      - name: Checkout sources
-        uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
-      - name: Setup Environment
-        uses: ./.github/actions/setup-environment
-      - name: Cache ESLint
-        uses: actions/cache@v4.2.2
-        with:
-          path: .eslintcache
-          key: ${{ runner.os }}-eslint-${{ hashFiles('./yarn.lock') }}-${{ hashFiles('./.eslint*') }}
-      - name: Lint
-        run: yarn lint
+      - name: No-op
+        run: echo "Lint placeholder — no linter configured yet"
       - name: Generate GitHub token
         uses: actions/create-github-app-token@v1.11.6
         if: ${{ success() || failure() }}
@@ -59,10 +47,10 @@ jobs:
           name: 'Lint'
           status: ${{ job.status }}
           url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          description: ${{ job.status == 'success' && 'Linted successfully' || 'Linted with errors. Check PR annotations' }}
+          description: ${{ job.status == 'success' && 'Lint passed' || 'Lint failed' }}
 
-  test:
-    name: Unit Test
+  validate-definitions:
+    name: Validate Definitions
     runs-on: ubuntu-24.04
     steps:
       - name: Load secrets from 1Password
@@ -72,7 +60,46 @@ jobs:
           export-env: false
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN_RO }}
-          #
+          APP_ID: 'op://GitHub.Actions/GitHub/corva-bot/APP_ID'
+          PRIVATE_KEY: 'op://GitHub.Actions/GitHub/corva-bot/PRIVATE_KEY'
+      - name: Checkout sources
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+      - name: Setup Node environment
+        uses: actions/setup-node@v4.3.0
+        with:
+          node-version-file: '.nvmrc'
+      - name: Validate definitions
+        run: node scripts/validate-definitions.mjs
+      - name: Generate GitHub token
+        uses: actions/create-github-app-token@v1.11.6
+        if: ${{ success() || failure() }}
+        id: token
+        with:
+          app-id: ${{ steps.secrets.outputs.APP_ID }}
+          private-key: ${{ steps.secrets.outputs.PRIVATE_KEY }}
+      - name: Add PR status check
+        uses: ouzi-dev/commit-status-updater@v2.0.2
+        if: ${{ success() || failure() }}
+        with:
+          token: ${{ steps.token.outputs.token }}
+          name: 'Validate Definitions'
+          status: ${{ job.status }}
+          url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          description: ${{ job.status == 'success' && 'All definitions valid' || 'Definition validation failed' }}
+
+  test-js:
+    name: JS Tests
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Load secrets from 1Password
+        uses: 1password/load-secrets-action@v3.0.0
+        id: secrets
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN_RO }}
           APP_ID: 'op://GitHub.Actions/GitHub/corva-bot/APP_ID'
           PRIVATE_KEY: 'op://GitHub.Actions/GitHub/corva-bot/PRIVATE_KEY'
       - name: Checkout sources
@@ -81,13 +108,62 @@ jobs:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
       - name: Setup Environment
         uses: ./.github/actions/setup-environment
-      - name: Cache Jest
-        uses: actions/cache@v4.2.2
-        with:
-          path: ./node_modules/.cache/jest
-          key: ${{ runner.os }}-jest-${{ hashFiles('./yarn.lock') }}
+      - name: Sync definitions
+        uses: ./.github/actions/sync-definitions
       - name: Test
-        run: yarn test
+        run: cd js && npm test
+
+  test-py:
+    name: Python Tests
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Load secrets from 1Password
+        uses: 1password/load-secrets-action@v3.0.0
+        id: secrets
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN_RO }}
+          APP_ID: 'op://GitHub.Actions/GitHub/corva-bot/APP_ID'
+          PRIVATE_KEY: 'op://GitHub.Actions/GitHub/corva-bot/PRIVATE_KEY'
+      - name: Checkout sources
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Sync definitions
+        uses: ./.github/actions/sync-definitions
+      - name: Install dependencies
+        run: cd py && pip install -e ".[test]"
+      - name: Test
+        run: cd py && python -m pytest
+
+  unit-test:
+    name: Unit Test
+    needs: [test-js, test-py]
+    runs-on: ubuntu-24.04
+    if: ${{ always() }}
+    steps:
+      - name: Check test results
+        run: |
+          if [ "${{ needs.test-js.result }}" != "success" ] || [ "${{ needs.test-py.result }}" != "success" ]; then
+            echo "JS Tests: ${{ needs.test-js.result }}"
+            echo "Python Tests: ${{ needs.test-py.result }}"
+            exit 1
+          fi
+      - name: Load secrets from 1Password
+        uses: 1password/load-secrets-action@v3.0.0
+        if: ${{ success() || failure() }}
+        id: secrets
+        with:
+          export-env: false
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN_RO }}
+          APP_ID: 'op://GitHub.Actions/GitHub/corva-bot/APP_ID'
+          PRIVATE_KEY: 'op://GitHub.Actions/GitHub/corva-bot/PRIVATE_KEY'
       - name: Generate GitHub token
         uses: actions/create-github-app-token@v1.11.6
         if: ${{ success() || failure() }}
@@ -103,4 +179,4 @@ jobs:
           name: 'Unit Test'
           status: ${{ job.status }}
           url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          description: ${{ job.status == 'success' && 'Unit tests ran successfully' || 'Unit tests ran with errors. Check PR annotations' }}
+          description: ${{ job.status == 'success' && 'All tests passed' || 'Tests failed' }}

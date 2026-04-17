@@ -5,13 +5,16 @@ on:
     branches:
       - master
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   release-please:
     name: Release Please
     runs-on: ubuntu-24.04
     steps:
-      - name: Release
-        uses: corva-ai/gh-actions/common/release-please@develop
+      - uses: googleapis/release-please-action@v4
         with:
-          op-service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN_RO }}
-          release-type: node
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json

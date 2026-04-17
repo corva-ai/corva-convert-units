@@ -1,0 +1,43 @@
+{
+  "metric": {
+    "m": {
+      "name": {
+        "singular": "Meter",
+        "plural": "Meters",
+        "display": "m"
+      },
+      "to_anchor": 1,
+      "aliases": ["m", "m.", "meter", "meters"]
+    }
+  },
+  "imperial": {
+    "ft": {
+      "name": {
+        "singular": "Foot",
+        "plural": "Feet",
+        "display": "ft"
+      },
+      "to_anchor": 1,
+      "aliases": ["ft", "f", "'", "feet", "ftUS"]
+    },
+    "usft": {
+      "name": {
+        "singular": "US Survey Foot",
+        "plural": "US Survey Feet",
+        "display": "usft"
+      },
+      "to_anchor": 1.000002,
+      "aliases": ["usft", "usfeet"]
+    }
+  },
+  "_anchors": {
+    "metric": {
+      "unit": "m",
+      "ratio": 3.28084
+    },
+    "imperial": {
+      "unit": "ft",
+      "ratio": 0.30480060960121924
+    }
+  }
+}

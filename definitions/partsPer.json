@@ -1,0 +1,47 @@
+{
+  "metric": {
+    "ppm": {
+      "name": {
+        "singular": "Part-per Million",
+        "plural": "Parts-per Million",
+        "display": "ppm"
+      },
+      "to_anchor": 1,
+      "aliases": ["ppm"]
+    },
+    "ppb": {
+      "name": {
+        "singular": "Part-per Billion",
+        "plural": "Parts-per Billion",
+        "display": "ppb"
+      },
+      "to_anchor": 0.001,
+      "aliases": ["ppb"]
+    },
+    "ppt": {
+      "name": {
+        "singular": "Part-per Trillion",
+        "plural": "Parts-per Trillion",
+        "display": "ppt"
+      },
+      "to_anchor": 0.000001,
+      "aliases": ["ppt"]
+    },
+    "ppq": {
+      "name": {
+        "singular": "Part-per Quadrillion",
+        "plural": "Parts-per Quadrillion",
+        "display": "ppq"
+      },
+      "to_anchor": 0.000000001,
+      "aliases": ["ppq"]
+    }
+  },
+  "imperial": {},
+  "_anchors": {
+    "metric": {
+      "unit": "ppm",
+      "ratio": 0.000001
+    }
+  }
+}

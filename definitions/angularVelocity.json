@@ -1,0 +1,87 @@
+{
+  "metric": {
+    "1/s": {
+      "name": {
+        "singular": "revolution per second",
+        "plural": "revolutions per second",
+        "display": "1/s"
+      },
+      "to_anchor": 60,
+      "aliases": ["1/s", "Hz"]
+    },
+    "rev/s": {
+      "name": {
+        "singular": "revolution per second",
+        "plural": "revolutions per second",
+        "display": "rev/s"
+      },
+      "to_anchor": 60,
+      "aliases": ["rev/s", "rps"]
+    },
+    "rpm": {
+      "name": {
+        "singular": "revolution per minute",
+        "plural": "revolutions per minute",
+        "display": "rpm"
+      },
+      "to_anchor": 1,
+      "aliases": ["rpm", "RPM", "rev/m", "c/min"]
+    },
+    "rph": {
+      "name": {
+        "singular": "revolution per hour",
+        "plural": "revolutions per hour",
+        "display": "rph"
+      },
+      "to_anchor": 0.016666666666666666,
+      "aliases": ["rph", "rev/h"]
+    },
+    "radsec": {
+      "name": {
+        "singular": "radian per second",
+        "plural": "radians per second",
+        "display": "rad/sec"
+      },
+      "to_anchor": 9.549296585513721,
+      "aliases": ["radsec", "rad/s", "rad/sec"]
+    },
+    "dega/s": {
+      "name": {
+        "singular": "degree per second",
+        "plural": "degrees per second",
+        "display": "dega/s"
+      },
+      "to_anchor": 0.16666666666666666,
+      "aliases": ["dega/s"]
+    },
+    "dega/m": {
+      "name": {
+        "singular": "degree per minute",
+        "plural": "degrees per minute",
+        "display": "dega/m"
+      },
+      "to_anchor": 0.002777777777777778,
+      "aliases": ["dega/m"]
+    },
+    "dega/h": {
+      "name": {
+        "singular": "degree per hour",
+        "plural": "degrees per hour",
+        "display": "dega/h"
+      },
+      "to_anchor": 0.0000462962962962963,
+      "aliases": ["dega/h"]
+    }
+  },
+  "imperial": {},
+  "_anchors": {
+    "metric": {
+      "unit": "rpm",
+      "ratio": 1
+    },
+    "imperial": {
+      "unit": "rpm",
+      "ratio": 1
+    }
+  }
+}

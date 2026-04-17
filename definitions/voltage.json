@@ -1,0 +1,70 @@
+{
+  "metric": {
+    "V": {
+      "name": {
+        "singular": "Volt",
+        "plural": "Volts",
+        "display": "V"
+      },
+      "to_anchor": 1000,
+      "aliases": ["V"]
+    },
+    "mV": {
+      "name": {
+        "singular": "Millivolt",
+        "plural": "Millivolts",
+        "display": "mV"
+      },
+      "to_anchor": 1,
+      "aliases": ["mV"]
+    },
+    "nV": {
+      "name": {
+        "singular": "Nanovolt",
+        "plural": "Nanovolts",
+        "display": "nV"
+      },
+      "to_anchor": 0.000001,
+      "aliases": ["nV"]
+    }
+  },
+  "imperial": {
+    "V": {
+      "name": {
+        "singular": "Volt",
+        "plural": "Volts",
+        "display": "V"
+      },
+      "to_anchor": 1000,
+      "aliases": ["V"]
+    },
+    "mV": {
+      "name": {
+        "singular": "Millivolt",
+        "plural": "Millivolts",
+        "display": "mV"
+      },
+      "to_anchor": 1,
+      "aliases": ["mV"]
+    },
+    "nV": {
+      "name": {
+        "singular": "Nanovolt",
+        "plural": "Nanovolts",
+        "display": "nV"
+      },
+      "to_anchor": 0.000001,
+      "aliases": ["nV"]
+    }
+  },
+  "_anchors": {
+    "metric": {
+      "unit": "mV",
+      "ratio": 1
+    },
+    "imperial": {
+      "unit": "mV",
+      "ratio": 1
+    }
+  }
+}

@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=69.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "corva-unit-converter"
+version = "2.0.0"
+description = "Unit converter for O&G and other units"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [{name = "Corva.ai"}]
+
+[project.optional-dependencies]
+test = ["pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+corva_unit_converter = ["definitions/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

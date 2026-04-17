@@ -1,0 +1,34 @@
+{
+  "metric": {
+    "unitless": {
+      "name": {
+        "singular": "unitless",
+        "plural": "unitless",
+        "display": "unitless"
+      },
+      "to_anchor": 1,
+      "aliases": ["unitless", "On/Off", "None", "EUC", "Euc", "UNITLESS", "Unitless"]
+    }
+  },
+  "imperial": {
+    "unitless": {
+      "name": {
+        "singular": "unitless",
+        "plural": "unitless",
+        "display": "unitless"
+      },
+      "to_anchor": 1,
+      "aliases": ["unitless", "On/Off", "None", "EUC", "Euc", "UNITLESS", "Unitless"]
+    }
+  },
+  "_anchors": {
+    "metric": {
+      "unit": "unitless",
+      "ratio": 1
+    },
+    "imperial": {
+      "unit": "unitless",
+      "ratio": 1
+    }
+  }
+}

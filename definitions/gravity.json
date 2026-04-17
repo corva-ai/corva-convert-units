@@ -1,0 +1,43 @@
+{
+  "metric": {
+    "m/s2": {
+      "name": {
+        "singular": "Meter per second squared",
+        "plural": "Meters per second squared",
+        "display": "m/s\u00b2"
+      },
+      "to_anchor": 1,
+      "aliases": ["m/s2", "m/s\u00b2"]
+    },
+    "g": {
+      "name": {
+        "singular": "Standard gravity",
+        "plural": "Standard gravities",
+        "display": "g"
+      },
+      "to_anchor": 9.80665,
+      "aliases": ["g", "gn"]
+    }
+  },
+  "imperial": {
+    "ft/s2": {
+      "name": {
+        "singular": "Foot per second squared",
+        "plural": "Feet per second squared",
+        "display": "ft/s\u00b2"
+      },
+      "to_anchor": 1,
+      "aliases": ["ft/s2", "ft/s\u00b2"]
+    }
+  },
+  "_anchors": {
+    "metric": {
+      "unit": "m/s2",
+      "ratio": 3.28084
+    },
+    "imperial": {
+      "unit": "ft/s2",
+      "ratio": 0.3047999902464003
+    }
+  }
+}

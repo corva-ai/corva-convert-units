@@ -1,0 +1,124 @@
+{
+  "metric": {
+    "Units (0-10000u)": {
+      "name": {
+        "singular": "Unit (0-10000u)",
+        "plural": "Units (0-10000u)",
+        "display": "Units (0-10000u)"
+      },
+      "to_anchor": 0.01,
+      "aliases": ["Units (0-10000u)"]
+    },
+    "Units (0-5000u)": {
+      "name": {
+        "singular": "Unit (0-5000u)",
+        "plural": "Units (0-5000u)",
+        "display": "Units (0-5000u)"
+      },
+      "to_anchor": 0.02,
+      "aliases": ["Units (0-5000u)"]
+    },
+    "Units": {
+      "name": {
+        "singular": "Unit",
+        "plural": "Units",
+        "display": "Units"
+      },
+      "to_anchor": 0.02,
+      "aliases": ["Units"]
+    },
+    "%EMA": {
+      "name": {
+        "singular": "%EMA",
+        "plural": "%EMA",
+        "display": "%EMA"
+      },
+      "to_anchor": 1,
+      "aliases": ["%EMA"]
+    },
+    "%": {
+      "name": {
+        "singular": "%",
+        "plural": "%",
+        "display": "%"
+      },
+      "to_anchor": 1,
+      "aliases": ["%", "%%", "% by vol"]
+    },
+    "ppm": {
+      "name": {
+        "singular": "ppm",
+        "plural": "ppm",
+        "display": "ppm"
+      },
+      "to_anchor": 0.0001,
+      "aliases": ["ppm"]
+    }
+  },
+  "imperial": {
+    "Units (0-10000u)": {
+      "name": {
+        "singular": "Unit (0-10000u)",
+        "plural": "Units (0-10000u)",
+        "display": "Units (0-10000u)"
+      },
+      "to_anchor": 0.01,
+      "aliases": ["Units (0-10000u)"]
+    },
+    "Units (0-5000u)": {
+      "name": {
+        "singular": "Unit (0-5000u)",
+        "plural": "Units (0-5000u)",
+        "display": "Units (0-5000u)"
+      },
+      "to_anchor": 0.02,
+      "aliases": ["Units (0-5000u)"]
+    },
+    "Units": {
+      "name": {
+        "singular": "Unit",
+        "plural": "Units",
+        "display": "Units"
+      },
+      "to_anchor": 0.02,
+      "aliases": ["Units"]
+    },
+    "%EMA": {
+      "name": {
+        "singular": "%EMA",
+        "plural": "%EMA",
+        "display": "%EMA"
+      },
+      "to_anchor": 1,
+      "aliases": ["%EMA"]
+    },
+    "%": {
+      "name": {
+        "singular": "%",
+        "plural": "%",
+        "display": "%"
+      },
+      "to_anchor": 1,
+      "aliases": ["%", "%%", "% by vol"]
+    },
+    "ppm": {
+      "name": {
+        "singular": "ppm",
+        "plural": "ppm",
+        "display": "ppm"
+      },
+      "to_anchor": 0.0001,
+      "aliases": ["ppm"]
+    }
+  },
+  "_anchors": {
+    "metric": {
+      "unit": "%EMA",
+      "ratio": 1
+    },
+    "imperial": {
+      "unit": "%EMA",
+      "ratio": 1
+    }
+  }
+}

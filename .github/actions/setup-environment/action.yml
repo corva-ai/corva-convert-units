@@ -13,9 +13,9 @@ runs:
       uses: actions/cache@v4.2.2
       id: nodejs-cache
       with:
-        path: node_modules
-        key: ${{ runner.os }}-${{ runner.arch }}-yarn-${{ hashFiles('./yarn.lock') }}
+        path: js/node_modules
+        key: ${{ runner.os }}-${{ runner.arch }}-npm-${{ hashFiles('js/package-lock.json') }}
     - name: Install NodeJS dependencies
       shell: bash
       if: ${{ steps.nodejs-cache.outputs.cache-hit != 'true' }}
-      run: yarn install --frozen-lockfile
+      run: cd js && npm ci
