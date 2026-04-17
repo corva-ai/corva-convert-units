@@ -3,14 +3,14 @@ name: 'Publish'
 on:
   push:
     tags:
-      - 'js-v*'
-      - 'py-v*'
+      - 'js@v*'
+      - 'py@v*'
   workflow_dispatch:
 
 jobs:
   publish-js:
     name: Publish JS
-    if: startsWith(github.ref_name, 'js-v') || github.event_name == 'workflow_dispatch'
+    if: startsWith(github.ref_name, 'js@v') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     steps:
       - name: Load secrets from 1Password
@@ -22,7 +22,7 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN_RO }}
           PUBLISH_NPM_TOKEN_DEV: 'op://GitHub.Actions/NPM/PUBLISH_NPM_TOKEN_DEV'
       - name: Checkout sources
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5
       - name: Setup Environment
         uses: ./.github/actions/setup-environment
       - name: Sync definitions
@@ -30,22 +30,24 @@ jobs:
       - name: Build
         run: cd js && npm run build
       - name: Publish
-        uses: corva-ai/gh-actions/common/run-script@develop
+        uses: actions/github-script@v8
         env:
           TAG: '${{ github.ref_name }}'
           NPM_TOKEN: '${{ steps.secrets.outputs.PUBLISH_NPM_TOKEN_DEV }}'
           WORKING_DIRECTORY: 'js'
         with:
-          script-name: 'publish.mjs'
+          script: |
+            const {default: run} = await import(`${process.cwd()}/.github/scripts/publish.mjs`);
+            await run({github, context, core, glob, io, exec, require});
 
   publish-py:
     name: Publish Python
-    if: startsWith(github.ref_name, 'py-v')
+    if: startsWith(github.ref_name, 'py@v')
     runs-on: ubuntu-24.04
     environment: pypi
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5
       - name: Setup Python
         uses: actions/setup-python@v5
         with:

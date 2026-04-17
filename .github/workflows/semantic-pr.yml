@@ -41,6 +41,3 @@ jobs:
           status: success
           url: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
           description: 'Skipped'
-    # Re-enable once corva-ai/gh-actions workflow is accessible:
-    # uses: corva-ai/gh-actions/.github/workflows/workflow-semantic-pr.yml@develop
-    # secrets: inherit
