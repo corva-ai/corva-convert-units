@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/corva-ai/corva-convert-units/compare/js@v2.1.0...js@v2.1.1) (2026-04-17)
+
+
+### Bug Fixes
+
+* **ci:** trigger release wf ([#110](https://github.com/corva-ai/corva-convert-units/issues/110)) ([c5f8acb](https://github.com/corva-ai/corva-convert-units/commit/c5f8acb5adee3b1771bd4153bef64319f585eca7))
+
 ## [2.1.0](https://github.com/corva-ai/corva-convert-units/compare/js@v2.0.0...js@v2.1.0) (2026-04-17)
 
 
