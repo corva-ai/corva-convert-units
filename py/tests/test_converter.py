@@ -145,7 +145,12 @@ class TestGetMeasures:
             assert m in measures
 
     def test_contains_formation_density(self):
-        assert "formationDensity" in get_measures()
+        assert "formation_density" in get_measures()
+
+    def test_returns_snake_case(self):
+        measures = get_measures()
+        for m in measures:
+            assert m == m.lower(), f"{m!r} is not snake_case"
 
 
 # ---------------------------------------------------------------------------
@@ -215,14 +220,14 @@ class TestListUnits:
 
 class TestFormationDensity:
     def test_formation_density_in_measures(self):
-        assert "formationDensity" in get_measures()
+        assert "formation_density" in get_measures()
 
     def test_list_units_for_formation_density(self):
-        units = list_units("formationDensity")
+        units = list_units("formation_density")
         assert len(units) > 0
 
     def test_conversion_using_formation_density(self):
-        result = convert(1, "kg/m3", "lb/gal", measure="formationDensity")
+        result = convert(1, "kg/m3", "lb/gal", measure="formation_density")
         assert result is not None
         assert result == pytest.approx(
             convert(1, "kg/m3", "lb/gal", measure="density"),
@@ -428,6 +433,88 @@ class TestToBest:
         result = to_best(5280, "ft")
         assert result is not None
         assert result["unit"] == "mi"
+
+
+# ---------------------------------------------------------------------------
+# definitions module backward compatibility
+# ---------------------------------------------------------------------------
+
+class TestDefinitionsModule:
+    """The old package had ``corva_unit_converter.definitions.__all__`` as a
+    sorted list of snake_case measure names."""
+
+    def test_importable(self):
+        from corva_unit_converter import definitions
+        assert hasattr(definitions, "__all__")
+
+    def test_all_is_list_of_strings(self):
+        from corva_unit_converter.definitions import __all__ as measure_names
+        assert isinstance(measure_names, list)
+        assert all(isinstance(n, str) for n in measure_names)
+
+    def test_snake_case_names(self):
+        from corva_unit_converter.definitions import __all__ as measure_names
+        for name in measure_names:
+            assert name == name.lower(), f"{name!r} is not snake_case"
+
+    def test_contains_expected_measures(self):
+        from corva_unit_converter.definitions import __all__ as measure_names
+        for m in ["length", "pressure", "temperature", "density", "volume"]:
+            assert m in measure_names
+
+    def test_camel_case_measures_converted(self):
+        from corva_unit_converter.definitions import __all__ as measure_names
+        assert "acoustic_slowness" in measure_names
+        assert "gas_flow_rate" in measure_names
+        assert "formation_density" in measure_names
+
+    def test_sorted(self):
+        from corva_unit_converter.definitions import __all__ as measure_names
+        assert measure_names == sorted(measure_names)
+
+
+# ---------------------------------------------------------------------------
+# snake_case measure name backward compatibility
+# ---------------------------------------------------------------------------
+
+class TestSnakeCaseMeasureBackwardCompat:
+    """Legacy callers used snake_case measure names (e.g. acoustic_slowness).
+    The converter must accept both snake_case and camelCase transparently."""
+
+    def test_convert_with_snake_case_measure(self):
+        result = convert(1, "ft", "m", measure="length")
+        snake = convert(1, "ft", "m", measure="length")
+        assert result == snake
+
+    def test_acoustic_slowness_snake(self):
+        from corva_unit_converter import list_units
+        units_camel = list_units("acousticSlowness")
+        units_snake = list_units("acoustic_slowness")
+        assert len(units_snake) > 0
+        assert units_camel == units_snake
+
+    def test_gas_flow_rate_snake(self):
+        from corva_unit_converter import possibilities
+        camel = possibilities("gasFlowRate")
+        snake = possibilities("gas_flow_rate")
+        assert len(snake) > 0
+        assert camel == snake
+
+    def test_formation_density_snake(self):
+        from corva_unit_converter import possibilities
+        camel = possibilities("formationDensity")
+        snake = possibilities("formation_density")
+        assert len(snake) > 0
+        assert camel == snake
+
+    def test_unknown_measure_still_returns_none(self):
+        result = convert(1, "ft", "m", measure="completely_unknown_measure")
+        assert result is None
+
+    def test_get_measures_returns_snake_case(self):
+        measures = get_measures()
+        assert "acoustic_slowness" in measures
+        assert "acousticSlowness" not in measures
 
 
 # ---------------------------------------------------------------------------

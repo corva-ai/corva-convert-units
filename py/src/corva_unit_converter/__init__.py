@@ -12,11 +12,13 @@ from .converter import (
     possibilities,
     to_best,
 )
+from . import definitions
 
 __all__ = [
     "Converter",
     "bucket_mapping",
     "convert",
+    "definitions",
     "describe",
     "get_measures",
     "get_unit",

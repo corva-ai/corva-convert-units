@@ -158,7 +158,8 @@ all_measures = measures()          # list of measure names
 info = describe('ft')              # unit metadata dict
 ```
 
-- `src/corva_unit_converter/__init__.py` — exports `convert`, `measures`, `describe`, `list_units`, `Converter` (for backward compat)
+- `src/corva_unit_converter/__init__.py` — exports `convert`, `measures`, `describe`, `list_units`, `Converter` (for backward compat), and `definitions` submodule
+- `src/corva_unit_converter/definitions.py` — restored backward-compat module; its `__all__` is a sorted list of snake_case measure names built dynamically from the loaded JSON definitions (e.g. `acoustic_slowness`, `gas_flow_rate`). All `measure=` parameters in the public API also accept snake_case transparently.
 - `pyproject.toml` — modern packaging with `[project]` table, `package-data` includes `definitions/*.json`
 - Adds all previously-missing measures: volume, surveyLength, gasFlowRate, concentration, gravity, gravityRMS, each, unitless, spontaneousPotential, resistivity, formationDensity
 - JSON definitions bundled: `sync-definitions.sh` copies `definitions/*.json` into `py/src/corva_unit_converter/definitions/`
