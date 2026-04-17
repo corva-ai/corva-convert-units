@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/corva-ai/corva-convert-units/compare/js@v2.1.1...js@v2.2.0) (2026-04-17)
+
+
+### Miscellaneous Chores
+
+* **js:** Synchronize corva-convert-units versions
+
 ## [2.1.1](https://github.com/corva-ai/corva-convert-units/compare/js@v2.1.0...js@v2.1.1) (2026-04-17)
 
 

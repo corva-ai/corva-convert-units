@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/corva-ai/corva-convert-units/compare/py@v2.1.1...py@v2.2.0) (2026-04-17)
+
+
+### Features
+
+* sync snake cased definitions api for py ([#112](https://github.com/corva-ai/corva-convert-units/issues/112)) ([0b416d2](https://github.com/corva-ai/corva-convert-units/commit/0b416d275429880251ea5a251c7d8565019652a8))
+
 ## [2.1.1](https://github.com/corva-ai/corva-convert-units/compare/py@v2.1.0...py@v2.1.1) (2026-04-17)
 
 
