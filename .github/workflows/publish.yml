@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Load secrets from 1Password
-        uses: 1password/load-secrets-action@v3.0.0
+        uses: 1password/load-secrets-action@v4.0.0
         id: secrets
         with:
           export-env: false
@@ -22,7 +22,7 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN_RO }}
           PUBLISH_NPM_TOKEN_DEV: 'op://GitHub.Actions/NPM/PUBLISH_NPM_TOKEN_DEV'
       - name: Checkout sources
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Environment
         uses: ./.github/actions/setup-environment
       - name: Sync definitions
@@ -30,7 +30,7 @@ jobs:
       - name: Build
         run: cd js && npm run build
       - name: Publish
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           TAG: '${{ github.ref_name }}'
           NPM_TOKEN: '${{ steps.secrets.outputs.PUBLISH_NPM_TOKEN_DEV }}'
@@ -47,9 +47,9 @@ jobs:
     environment: pypi
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
       - name: Sync definitions
