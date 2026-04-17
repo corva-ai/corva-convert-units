@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Load secrets from 1Password
-        uses: 1password/load-secrets-action@v3.0.0
+        uses: 1password/load-secrets-action@v4.0.0
         id: secrets
         with:
           export-env: false
@@ -29,7 +29,7 @@ jobs:
           APP_ID: 'op://GitHub.Actions/GitHub/corva-bot/APP_ID'
           PRIVATE_KEY: 'op://GitHub.Actions/GitHub/corva-bot/PRIVATE_KEY'
       - name: Generate GitHub token
-        uses: actions/create-github-app-token@v1.11.6
+        uses: actions/create-github-app-token@v3.1.1
         id: token
         with:
           app-id: ${{ steps.secrets.outputs.APP_ID }}
