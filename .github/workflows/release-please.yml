@@ -1,20 +1,21 @@
+# yamllint disable rule:truthy
 name: Release
 
 on:
   push:
     branches:
       - master
-
-permissions:
-  contents: write
-  pull-requests: write
+    paths:
+      - 'js/**'
+      - 'py/**'
 
 jobs:
   release-please:
     name: Release Please
     runs-on: ubuntu-24.04
     steps:
-      - uses: googleapis/release-please-action@v4
+      - name: Release
+        uses: corva-ai/gh-actions/common/release-please@develop
         with:
-          config-file: release-please-config.json
-          manifest-file: .release-please-manifest.json
+          op-service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN_RO }}
+          github-app: corva-valuesbot
