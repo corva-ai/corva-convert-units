@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/corva-ai/corva-convert-units/compare/py@v2.1.0...py@v2.1.1) (2026-04-17)
+
+
+### Miscellaneous Chores
+
+* **py:** Synchronize corva-convert-units versions
+
 ## [2.1.0](https://github.com/corva-ai/corva-convert-units/compare/py@v2.0.0...py@v2.1.0) (2026-04-17)
 
 
