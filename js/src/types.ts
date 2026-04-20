@@ -48,17 +48,3 @@ export type PlainUnit = {
 };
 
 export type BucketMapping = Record<string, string[]>;
-
-export type ConvertFn = {
-  (value: number, from: string, to: string): number;
-  (value: number, from: string, to: string, measure: string): number;
-
-  measures(): string[];
-  describe(abbr: string): PlainUnit;
-  list(measure?: string): PlainUnit[];
-  listWithAlias(measure?: string): PlainUnit[];
-  possibilities(measure?: string): string[];
-  toBest(value: number, from: string, measure?: string, exclude?: string[]): ConversionResult | undefined;
-  bucketMapping(): BucketMapping;
-  getUnitKeyByAlias(alias: string): string | undefined;
-};
