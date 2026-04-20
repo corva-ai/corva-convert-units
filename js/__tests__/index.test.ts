@@ -1,4 +1,4 @@
-import convert, { Converter } from '../src/index.js';
+import convert from '../src/index.js';
 
 describe('convert — direct API (3-arg / 4-arg)', () => {
   it('converts ft to m', () => {
@@ -23,31 +23,6 @@ describe('convert — direct API (3-arg / 4-arg)', () => {
 
   it('converts in to mm', () => {
     expect(convert(1, 'in', 'mm')).toBeCloseTo(25.4, 2);
-  });
-});
-
-describe('convert — chained API', () => {
-  it('converts ft to m via from/to', () => {
-    expect(convert(1).from('ft').to('m')).toBeCloseTo(0.3048, 4);
-  });
-
-  it('converts m to ft via from/to', () => {
-    expect(convert(1).from('m').to('ft')).toBeCloseTo(3.28084, 4);
-  });
-
-  it('returns same value for same unit', () => {
-    expect(convert(5).from('ft').to('ft')).toBe(5);
-  });
-
-  it('throws when .to is called before .from', () => {
-    expect(() => convert(1).to('m')).toThrow('.to must be called after .from');
-  });
-
-  it('throws when .from is called after .to', () => {
-    const c = convert(1);
-    c.from('ft');
-    c.to('m');
-    expect(() => c.from('km')).toThrow('.from must be called before .to');
   });
 });
 
@@ -229,6 +204,23 @@ describe('convert.possibilities()', () => {
   });
 });
 
+describe('convert.toBest()', () => {
+  it('returns the best unit for a length', () => {
+    const best = convert.toBest(100000, 'mm');
+    expect(best).toBeDefined();
+    expect(best!.val).toBeGreaterThanOrEqual(1);
+  });
+
+  it('respects the exclude list', () => {
+    const best = convert.toBest(100000, 'mm', undefined, ['m']);
+    expect(best?.unit).not.toBe('m');
+  });
+
+  it('returns undefined for an unknown unit', () => {
+    expect(convert.toBest(1, 'xyz_unknown')).toBeUndefined();
+  });
+});
+
 describe('convert.bucketMapping()', () => {
   it('returns an object', () => {
     const bm = convert.bucketMapping();
@@ -243,17 +235,22 @@ describe('convert.bucketMapping()', () => {
   });
 });
 
+describe('convert.listWithAlias()', () => {
+  it('includes aliases on units', () => {
+    const list = convert.listWithAlias('length');
+    expect(list.length).toBeGreaterThan(0);
+    const m = list.find((u) => u.abbr === 'm');
+    expect(m?.aliases).toContain('meter');
+  });
+});
+
 describe('error cases', () => {
-  it('throws for unsupported unit in direct API', () => {
+  it('throws for unsupported unit', () => {
     expect(() => convert(1, 'xyz_invalid', 'm')).toThrow(/Unsupported unit/);
   });
 
   it('throws for incompatible measures', () => {
     expect(() => convert(1, 'ft', 'C')).toThrow(/Cannot convert incompatible measures/);
-  });
-
-  it('throws for unsupported measure in Converter constructor', () => {
-    expect(() => new Converter(1, 'not_a_measure')).toThrow(/Unsupported measure/);
   });
 });
 
@@ -273,51 +270,4 @@ describe('round-trip conversions', () => {
       expect(back).toBeCloseTo(value, 2);
     });
   }
-});
-
-describe('Converter class', () => {
-  it('exposes measures()', () => {
-    const c = new Converter(1);
-    expect(c.measures()).toContain('length');
-  });
-
-  it('exposes list()', () => {
-    const c = new Converter(1);
-    const list = c.list('length');
-    expect(list.length).toBeGreaterThan(0);
-  });
-
-  it('exposes possibilities()', () => {
-    const c = new Converter(1);
-    const p = c.possibilities('pressure');
-    expect(p).toContain('psi');
-    expect(p).toContain('kPa');
-  });
-
-  it('exposes describe()', () => {
-    const c = new Converter(1);
-    const desc = c.describe('m');
-    expect(desc.abbr).toBe('m');
-    expect(desc.measure).toBe('length');
-  });
-
-  it('exposes getUnitBucketMapping()', () => {
-    const c = new Converter(1);
-    const bm = c.getUnitBucketMapping();
-    expect(typeof bm).toBe('object');
-    expect(Object.keys(bm).length).toBeGreaterThan(0);
-  });
-
-  it('exposes getUnitKeyByAlias()', () => {
-    const c = new Converter(1);
-    expect(c.getUnitKeyByAlias('meter')).toBe('m');
-  });
-
-  it('supports listWithAlias()', () => {
-    const c = new Converter(1);
-    const list = c.listWithAlias('length');
-    expect(list.length).toBeGreaterThan(0);
-    const m = list.find((u) => u.abbr === 'm');
-    expect(m?.aliases).toContain('meter');
-  });
 });

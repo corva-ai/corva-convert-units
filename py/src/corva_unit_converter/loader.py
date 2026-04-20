@@ -56,18 +56,18 @@ def load_definitions() -> dict[str, dict[str, Any]]:
     definitions: dict[str, dict[str, Any]] = {}
 
     for path in sorted(defs_dir.glob("*.json")):
-        if path.stem == "unitBucketMapping":
+        if path.stem == "unit_bucket_mapping":
             continue
         with open(path) as f:
             definitions[path.stem] = _process_anchors(json.load(f))
 
     if "density" in definitions:
-        definitions["formationDensity"] = definitions["density"]
+        definitions["formation_density"] = definitions["density"]
 
     return definitions
 
 
 def load_bucket_mapping() -> dict[str, Any]:
     defs_dir = _find_definitions_dir()
-    with open(defs_dir / "unitBucketMapping.json") as f:
+    with open(defs_dir / "unit_bucket_mapping.json") as f:
         return json.load(f)

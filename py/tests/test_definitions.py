@@ -13,7 +13,7 @@ DEFINITIONS_DIR = (
 )
 
 EXPECTED_DEF_COUNT = 46
-BUCKET_MAPPING_FILE = "unitBucketMapping.json"
+BUCKET_MAPPING_FILE = "unit_bucket_mapping.json"
 
 
 def _load_all_definitions() -> dict[str, dict]:
