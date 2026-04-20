@@ -28,7 +28,36 @@ const loadDefinitions = (): Record<string, MeasureDefinition> => {
 
   if (result.density) result.formationDensity = result.density;
 
-  return result;
+  // Restore the same lookup priority as the original library.
+  //
+  // Measures listed here are moved to the END of the insertion order so that
+  // "first occurrence wins" in buildIndexes() resolves shared unit keys correctly:
+  //
+  //   density / formationDensity — share kPa/m and psi/ft with pressureGradient;
+  //                                pressureGradient anchors must win
+  //   concentration              — shares ppm with partsPer; partsPer must win
+  //   gasConcentration           — shares ppm with partsPer; partsPer must win
+  //   force / gravity            — share g with mass; mass (gram) must win
+  //   gasVolume                  — shares gal/bbl/m3 with volume; liquid anchors must win
+  //   spontaneousPotential       — shares mV with voltage; voltage must win
+  const DEPRIORITIZED = [
+    'density',
+    'formationDensity',
+    'concentration',
+    'gasConcentration',
+    'force',
+    'gravity',
+    'gasVolume',
+    'spontaneousPotential',
+  ];
+  const deprioritized: Record<string, MeasureDefinition> = {};
+  for (const key of DEPRIORITIZED) {
+    if (result[key]) {
+      deprioritized[key] = result[key];
+      delete result[key];
+    }
+  }
+  return { ...result, ...deprioritized };
 };
 
 export const measures: Record<string, MeasureDefinition> = loadDefinitions();
