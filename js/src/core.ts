@@ -48,7 +48,7 @@ const getUnit = (abbr: string, measure?: string): ResolvedUnit | undefined => {
   return canonical !== undefined ? unitIndex.get(canonical) : undefined;
 };
 
-const _getUnitForPair = (abbrOne: string, abbrTwo: string): [ResolvedUnit, ResolvedUnit] | null => {
+const getUnitForPair = (abbrOne: string, abbrTwo: string): [ResolvedUnit, ResolvedUnit] | null => {
   const one = unitIndex.get(abbrOne);
   const two = unitIndex.get(abbrTwo);
   return one && two && one.measure === two.measure ? [one, two] : null;
@@ -80,7 +80,7 @@ const getPossibilities = (measure?: string, origin?: ResolvedUnit): string[] => 
   return (measureIndex.get(m) ?? []).map((e) => e.abbr);
 };
 
-const convertValue = (value: number, from: string, to: string, measure?: string): number => {
+const convert = (value: number, from: string, to: string, measure?: string): number => {
   const origin = getUnit(from, measure) ?? throwUnsupportedUnitError(from, getPossibilities());
   const dest = getUnit(to, measure) ?? throwUnsupportedUnitError(to, getPossibilities());
 
@@ -92,7 +92,7 @@ const convertValue = (value: number, from: string, to: string, measure?: string)
   if (dest.measure !== origin.measure) {
     if (measure) throwIncompatibleMeasuresError(dest.measure, origin.measure);
     [tgt, src] =
-      _getUnitForPair(dest.abbr, origin.abbr) ?? throwIncompatibleMeasuresError(dest.measure, origin.measure);
+      getUnitForPair(dest.abbr, origin.abbr) ?? throwIncompatibleMeasuresError(dest.measure, origin.measure);
   }
 
   let result = value * src.unit.to_anchor;
@@ -123,7 +123,7 @@ const toBest = (
     const entry = measureIndex.get(origin.measure)?.find((e) => e.abbr === abbr);
     if (!entry || entry.system !== origin.system) continue;
 
-    const result = convertValue(value, from, abbr, origin.measure);
+    const result = convert(value, from, abbr, origin.measure);
     const { singular, plural, display } = toPlainUnit(entry);
     if (!best || (result >= 1 && result < best.val)) {
       best = { val: result, unit: abbr, singular, plural, display };
@@ -133,4 +133,31 @@ const toBest = (
   return best;
 };
 
-export { measures, bucketMapping, aliasMap, getUnit, toPlainUnit, listUnits, getPossibilities, convertValue, toBest };
+const getMeasures = (): string[] => Object.keys(measures);
+
+const describe = (abbr: string): PlainUnit =>
+  toPlainUnit(getUnit(abbr) ?? throwUnsupportedUnitError(abbr, getPossibilities()));
+
+const listUnitsWithAliases = (measure?: string): PlainUnit[] => listUnits(measure, true);
+
+const possibilities = (measure?: string): string[] => getPossibilities(measure);
+
+const getUnitKeyByAlias = (alias: string): string | undefined => aliasMap.get(alias);
+
+export {
+  measures,
+  bucketMapping,
+  aliasMap,
+  getUnit,
+  getUnitForPair,
+  toPlainUnit,
+  listUnits,
+  listUnitsWithAliases,
+  getMeasures,
+  describe,
+  possibilities,
+  getUnitKeyByAlias,
+  getPossibilities,
+  convert,
+  toBest,
+};

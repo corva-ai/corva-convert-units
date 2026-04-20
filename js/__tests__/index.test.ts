@@ -1,4 +1,15 @@
-import convert from '../src/index.js';
+import convert, {
+  getMeasures,
+  describe as describeUnit,
+  getUnit,
+  getUnitForPair,
+  listUnits,
+  listUnitsWithAliases,
+  possibilities,
+  toBest,
+  bucketMapping,
+  getUnitKeyByAlias,
+} from '../src/index';
 
 describe('convert — direct API (3-arg / 4-arg)', () => {
   it('converts ft to m', () => {
@@ -117,38 +128,84 @@ describe('alias resolution', () => {
   });
 
   it('getUnitKeyByAlias resolves known alias', () => {
-    expect(convert.getUnitKeyByAlias('meter')).toBe('m');
+    expect(getUnitKeyByAlias('meter')).toBe('m');
   });
 
   it('getUnitKeyByAlias returns undefined for unknown alias', () => {
-    expect(convert.getUnitKeyByAlias('not_a_unit_xyz')).toBeUndefined();
+    expect(getUnitKeyByAlias('not_a_unit_xyz')).toBeUndefined();
   });
 });
 
-describe('convert.measures()', () => {
+describe('getMeasures()', () => {
   it('returns an array of measure names', () => {
-    const measures = convert.measures();
-    expect(Array.isArray(measures)).toBe(true);
-    expect(measures.length).toBeGreaterThan(0);
+    const ms = getMeasures();
+    expect(Array.isArray(ms)).toBe(true);
+    expect(ms.length).toBeGreaterThan(0);
   });
 
   it('contains expected measures', () => {
-    const measures = convert.measures();
-    expect(measures).toContain('length');
-    expect(measures).toContain('pressure');
-    expect(measures).toContain('temperature');
-    expect(measures).toContain('density');
-    expect(measures).toContain('volume');
+    const ms = getMeasures();
+    expect(ms).toContain('length');
+    expect(ms).toContain('pressure');
+    expect(ms).toContain('temperature');
+    expect(ms).toContain('density');
+    expect(ms).toContain('volume');
   });
 
   it('contains formationDensity (aliased from density)', () => {
-    expect(convert.measures()).toContain('formationDensity');
+    expect(getMeasures()).toContain('formationDensity');
   });
 });
 
-describe('convert.describe()', () => {
+describe('getUnit()', () => {
+  it('returns a resolved unit for a known abbreviation', () => {
+    const unit = getUnit('ft');
+    expect(unit).toMatchObject({
+      abbr: 'ft',
+      measure: 'length',
+      system: 'imperial',
+    });
+    expect(unit?.unit).toHaveProperty('to_anchor');
+  });
+
+  it('resolves an alias to its canonical unit', () => {
+    const unit = getUnit('meter');
+    expect(unit?.abbr).toBe('m');
+  });
+
+  it('returns undefined for an unknown abbreviation', () => {
+    expect(getUnit('xyz_invalid')).toBeUndefined();
+  });
+
+  it('finds a unit within a specific measure', () => {
+    const unit = getUnit('ft', 'length');
+    expect(unit?.abbr).toBe('ft');
+    expect(unit?.measure).toBe('length');
+  });
+});
+
+describe('getUnitForPair()', () => {
+  it('returns both units when they share the same measure', () => {
+    const pair = getUnitForPair('ft', 'm');
+    expect(pair).not.toBeNull();
+    const [one, two] = pair!;
+    expect(one.abbr).toBe('ft');
+    expect(two.abbr).toBe('m');
+    expect(one.measure).toBe(two.measure);
+  });
+
+  it('returns null when units belong to different measures', () => {
+    expect(getUnitForPair('ft', 'C')).toBeNull();
+  });
+
+  it('returns null for unknown abbreviations', () => {
+    expect(getUnitForPair('xyz', 'm')).toBeNull();
+  });
+});
+
+describe('describeUnit()', () => {
   it('returns metadata for a known unit', () => {
-    const desc = convert.describe('ft');
+    const desc = describeUnit('ft');
     expect(desc).toMatchObject({
       abbr: 'ft',
       measure: 'length',
@@ -160,13 +217,13 @@ describe('convert.describe()', () => {
   });
 
   it('throws for an unknown unit', () => {
-    expect(() => convert.describe('xyz_invalid')).toThrow(/Unsupported unit/);
+    expect(() => describeUnit('xyz_invalid')).toThrow(/Unsupported unit/);
   });
 });
 
-describe('convert.list()', () => {
+describe('listUnits()', () => {
   it('returns all units when no measure specified', () => {
-    const all = convert.list();
+    const all = listUnits();
     expect(all.length).toBeGreaterThan(10);
     expect(all[0]).toHaveProperty('abbr');
     expect(all[0]).toHaveProperty('measure');
@@ -175,7 +232,7 @@ describe('convert.list()', () => {
   });
 
   it('filters by measure', () => {
-    const lengthUnits = convert.list('length');
+    const lengthUnits = listUnits('length');
     expect(lengthUnits.length).toBeGreaterThan(0);
     for (const u of lengthUnits) {
       expect(u.measure).toBe('length');
@@ -183,9 +240,9 @@ describe('convert.list()', () => {
   });
 });
 
-describe('convert.possibilities()', () => {
+describe('possibilities()', () => {
   it('returns unit abbreviations for a measure', () => {
-    const p = convert.possibilities('length');
+    const p = possibilities('length');
     expect(Array.isArray(p)).toBe(true);
     expect(p).toContain('ft');
     expect(p).toContain('m');
@@ -193,51 +250,48 @@ describe('convert.possibilities()', () => {
   });
 
   it('returns all possibilities when no measure given', () => {
-    const all = convert.possibilities();
+    const all = possibilities();
     expect(all.length).toBeGreaterThan(50);
   });
 
   it('supports formationDensity', () => {
-    const p = convert.possibilities('formationDensity');
+    const p = possibilities('formationDensity');
     expect(p.length).toBeGreaterThan(0);
     expect(p).toContain('kg/m3');
   });
 });
 
-describe('convert.toBest()', () => {
+describe('toBest()', () => {
   it('returns the best unit for a length', () => {
-    const best = convert.toBest(100000, 'mm');
+    const best = toBest(100000, 'mm');
     expect(best).toBeDefined();
     expect(best!.val).toBeGreaterThanOrEqual(1);
   });
 
   it('respects the exclude list', () => {
-    const best = convert.toBest(100000, 'mm', undefined, ['m']);
+    const best = toBest(100000, 'mm', undefined, ['m']);
     expect(best?.unit).not.toBe('m');
   });
 
   it('returns undefined for an unknown unit', () => {
-    expect(convert.toBest(1, 'xyz_unknown')).toBeUndefined();
+    expect(toBest(1, 'xyz_unknown')).toBeUndefined();
   });
 });
 
-describe('convert.bucketMapping()', () => {
-  it('returns an object', () => {
-    const bm = convert.bucketMapping();
-    expect(typeof bm).toBe('object');
-    expect(bm).not.toBeNull();
+describe('bucketMapping', () => {
+  it('is an object', () => {
+    expect(typeof bucketMapping).toBe('object');
+    expect(bucketMapping).not.toBeNull();
   });
 
   it('has mapping keys', () => {
-    const bm = convert.bucketMapping();
-    const keys = Object.keys(bm);
-    expect(keys.length).toBeGreaterThan(0);
+    expect(Object.keys(bucketMapping).length).toBeGreaterThan(0);
   });
 });
 
-describe('convert.listWithAlias()', () => {
+describe('listUnitsWithAliases()', () => {
   it('includes aliases on units', () => {
-    const list = convert.listWithAlias('length');
+    const list = listUnitsWithAliases('length');
     expect(list.length).toBeGreaterThan(0);
     const m = list.find((u) => u.abbr === 'm');
     expect(m?.aliases).toContain('meter');

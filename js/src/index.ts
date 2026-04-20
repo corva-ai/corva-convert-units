@@ -9,4 +9,18 @@ export type {
   UnitNames,
 } from './types';
 
-export { default } from './convert';
+export {
+  convert,
+  getMeasures,
+  describe,
+  getUnit,
+  getUnitForPair,
+  listUnits,
+  listUnitsWithAliases,
+  possibilities,
+  toBest,
+  bucketMapping,
+  getUnitKeyByAlias,
+} from './core';
+
+export { convert as default } from './core';

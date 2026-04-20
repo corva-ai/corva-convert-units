@@ -23,29 +23,67 @@ scripts/         Build and validation scripts
 ### JavaScript / TypeScript
 
 ```typescript
-import { convert } from 'corva-convert-units';
+import {
+  convert,
+  getMeasures,
+  describe,
+  getUnit,
+  getUnitForPair,
+  listUnits,
+  listUnitsWithAliases,
+  possibilities,
+  toBest,
+  bucketMapping,
+  getUnitKeyByAlias,
+} from 'corva-convert-units';
 
-convert(1, 'ft', 'm');               // 0.3048
-convert(100, 'C', 'F');             // 212
-convert(1, 'ft', 'm', 'length');    // 0.3048
+convert(1, 'ft', 'm');                          // 0.3048
+convert(100, 'C', 'F');                         // 212
+convert(1, 'ft', 'm', 'length');                // 0.3048
 
-convert.measures();                  // ['length', 'pressure', ...]
-convert.describe('ft');              // { abbr: 'ft', measure: 'length', ... }
-convert.list('length');              // [{ abbr: 'mm', ... }, ...]
-convert.possibilities('length');     // ['mm', 'cm', 'm', 'km', ...]
+getMeasures();                                  // ['length', 'pressure', ...]
+describe('ft');                                 // { abbr: 'ft', measure: 'length', ... }
+getUnit('ft');                                  // { abbr: 'ft', measure: 'length', system: 'imperial', unit: ... }
+getUnitForPair('ft', 'm');                      // [{ abbr: 'ft', ... }, { abbr: 'm', ... }]
+listUnits('length');                            // [{ abbr: 'mm', ... }, ...]
+listUnitsWithAliases('length');                 // [{ abbr: 'm', aliases: ['meter', ...], ... }, ...]
+possibilities('length');                        // ['mm', 'cm', 'm', 'km', ...]
+toBest(100000, 'mm');                           // { val: 100, unit: 'm', ... }
+bucketMapping;                                  // { 'Length': ['m', 'ft', ...], ... }
+getUnitKeyByAlias('meter');                     // 'm'
 ```
 
 ### Python
 
 ```python
-from corva_unit_converter import convert, get_measures, describe
+from corva_unit_converter import (
+    convert,
+    get_measures,
+    describe,
+    get_unit,
+    get_unit_for_pair,
+    list_units,
+    list_units_with_aliases,
+    possibilities,
+    to_best,
+    bucket_mapping,
+    get_unit_key_by_alias,
+)
 
-convert(1, 'ft', 'm')                    # 0.3048
-convert(100, 'C', 'F')                  # 212.0
-convert(1, 'ft', 'm', measure='length') # 0.3048
+convert(1, 'ft', 'm')                           # 0.3048
+convert(100, 'C', 'F')                          # 212.0
+convert(1, 'ft', 'm', measure='length')         # 0.3048
 
-get_measures()     # ['length', 'pressure', ...]
-describe('ft')     # {'abbr': 'ft', 'measure': 'length', ...}
+get_measures()                                  # ['length', 'pressure', ...]
+describe('ft')                                  # {'abbr': 'ft', 'measure': 'length', ...}
+get_unit('ft')                                  # {'abbr': 'ft', 'measure': 'length', 'system': 'imperial', ...}
+get_unit_for_pair('ft', 'm')                    # ({'abbr': 'ft', ...}, {'abbr': 'm', ...})
+list_units('length')                            # [{'abbr': 'mm', ...}, ...]
+list_units_with_aliases('length')               # [{'abbr': 'm', 'aliases': ['meter', ...], ...}, ...]
+possibilities('length')                         # ['mm', 'cm', 'm', 'km', ...]
+to_best(100000, 'mm')                           # {'val': 100, 'unit': 'm', ...}
+bucket_mapping()                                # {'Length': ['m', 'ft', ...], ...}
+get_unit_key_by_alias('meter')                  # 'm'
 ```
 
 ## Development
