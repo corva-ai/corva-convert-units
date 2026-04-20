@@ -3,10 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { MeasureDefinition, BucketMapping } from './types';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const UNIT_BUCKET_MAPPING_FILE = 'unitBucketMapping.json';
-const DEFS_DIR = path.resolve(__dirname, '..', 'definitions');
+const DEFS_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', 'definitions');
 
 const loadDefinitions = (): Record<string, MeasureDefinition> => {
   const result: Record<string, MeasureDefinition> = {};
