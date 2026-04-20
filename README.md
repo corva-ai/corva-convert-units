@@ -5,7 +5,7 @@ Monorepo for unit conversion libraries used by Corva. A single set of shared JSO
 ## Structure
 
 ```
-definitions/     Shared JSON unit definitions (source of truth)
+definitions/     Shared JSON unit definitions
 js/              npm package: corva-convert-units
 py/              PyPI package: corva-unit-converter
 scripts/         Build and validation scripts
@@ -18,8 +18,6 @@ scripts/         Build and validation scripts
 | `corva-convert-units` | TypeScript/JS | npm | `npm install corva-convert-units` |
 | `corva-unit-converter` | Python | PyPI | `pip install corva-unit-converter` |
 
-Both packages are versioned together (currently v2.0.0).
-
 ## Usage
 
 ### JavaScript / TypeScript
@@ -27,21 +25,14 @@ Both packages are versioned together (currently v2.0.0).
 ```typescript
 import { convert } from 'corva-convert-units';
 
-// Direct conversion
-convert(1, 'ft', 'm');                // 0.3048
-convert(100, 'C', 'F');              // 212
+convert(1, 'ft', 'm');               // 0.3048
+convert(100, 'C', 'F');             // 212
+convert(1, 'ft', 'm', 'length');    // 0.3048
 
-// Chained API
-convert(1).from('ft').to('m');       // 0.3048
-
-// With explicit measure
-convert(1, 'ft', 'm', 'length');     // 0.3048
-
-// Utilities
-convert.measures();                   // ['length', 'pressure', ...]
-convert.describe('ft');               // { abbr: 'ft', measure: 'length', ... }
-convert.list('length');               // [{ abbr: 'mm', ... }, ...]
-convert.possibilities('length');      // ['mm', 'cm', 'm', 'km', ...]
+convert.measures();                  // ['length', 'pressure', ...]
+convert.describe('ft');              // { abbr: 'ft', measure: 'length', ... }
+convert.list('length');              // [{ abbr: 'mm', ... }, ...]
+convert.possibilities('length');     // ['mm', 'cm', 'm', 'km', ...]
 ```
 
 ### Python
@@ -72,7 +63,7 @@ describe('ft')     # {'abbr': 'ft', 'measure': 'length', ...}
 cd js && npm install
 
 # Python
-cd py && pip install -e ".[test]"
+cd py && python3 -m venv .venv && .venv/bin/pip install -e ".[test]"
 ```
 
 ### Commands
@@ -92,12 +83,8 @@ make clean        # Remove build artifacts
 
 1. Edit the JSON file in `definitions/` (or create a new one)
 2. Run `make test` to verify both packages (syncs definitions automatically)
-4. The `formationDensity` measure is an alias for `density` (handled in loader code, not in JSON)
+3. The `formation_density` measure is an alias for `density` (handled in loader code, not in JSON)
 
 ## Release
 
 Both packages use [release-please](https://github.com/googleapis/release-please) with the `linked-versions` plugin. Merging to `master` creates a combined release PR. When merged, tags `js-v*` and `python-v*` trigger separate publish workflows to npm and PyPI.
-
-## License
-
-MIT

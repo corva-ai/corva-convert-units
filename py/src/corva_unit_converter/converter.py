@@ -17,7 +17,6 @@ def _get_definitions() -> dict[str, dict[str, Any]]:
     return _definitions
 
 
-
 def _resolve_abbr_in_measure(abbr: str, measure_name: str) -> str:
     systems = _get_definitions().get(measure_name)
     if not systems:
@@ -160,7 +159,9 @@ def convert(
 
 
 def get_measures() -> list[str]:
-    """Return available measure names in snake_case (e.g. 'acoustic_slowness')."""
+    """
+    Return available measure names in snake_case (e.g. 'acoustic_slowness').
+    """
     return list(_get_definitions().keys())
 
 
@@ -345,5 +346,3 @@ def to_best(
             }
 
     return best
-
-
