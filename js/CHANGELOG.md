@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/corva-ai/corva-convert-units/compare/js@v2.2.0...js@v3.0.0) (2026-04-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove legacy chained api, improve sync script, file org ([#114](https://github.com/corva-ai/corva-convert-units/issues/114))
+
+### Code Refactoring
+
+* remove legacy chained api, improve sync script, file org ([#114](https://github.com/corva-ai/corva-convert-units/issues/114)) ([1e71c01](https://github.com/corva-ai/corva-convert-units/commit/1e71c0108428ecc9eb2bfc8fb5e26d49a19a60bc))
+
 ## [2.2.0](https://github.com/corva-ai/corva-convert-units/compare/js@v2.1.1...js@v2.2.0) (2026-04-17)
 
 
