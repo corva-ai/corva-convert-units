@@ -178,6 +178,54 @@ Each definition file follows this structure:
 
 ---
 
+## Known Issue — Shared Unit Keys and JS Lookup Priority
+
+Several unit keys appear in more than one measure with **different anchor chains**. This is intentional (e.g. `bbl` means liquid barrel in `volume` and gas-accounting barrel in `gasVolume`), but it requires explicit lookup priority management in the JS loader.
+
+### Root Cause
+
+The original separate JS library resolved unit keys by iterating a **hardcoded measure order** where the "general" measure always appeared before the "specialised" one. The monorepo loader uses `fs.readdirSync()` (alphabetical), which produces a different order and causes the wrong measure to win for shared keys.
+
+### Affected Unit Keys
+
+| Unit key(s) | General measure (should win) | Specialised measure (loses) | Notes |
+|---|---|---|---|
+| `gal`, `bbl`, `m3`, `l`, `fl-oz`, `ft3`, … | `volume` | `gasVolume` | gasVolume uses MCF-based gas-accounting anchors |
+| `mV` | `voltage` | `spontaneousPotential` | SP is always mV; no intra-measure conversion exists |
+| `g` | `mass` (gram, `to_anchor=1`) | `force` / `gravity` (g-force, `to_anchor=9.80665`) | Completely different physical quantities |
+| `kPa/m`, `psi/ft` | `pressureGradient` | `density` | Different anchor chains; same units used as equivalent mud weight |
+| `ppm` | `partsPer` | `concentration` / `gasConcentration` | gasConcentration uses a 0.0001 scale factor |
+| `%` | `proportion` | `gasConcentration` | Same `to_anchor`; proportion is the more general measure |
+
+### Fix (JS)
+
+`js/src/loader.ts` explicitly moves the specialised measures to the **end** of the insertion order after loading, so "first occurrence wins" in `buildIndexes()` always picks the general measure:
+
+```typescript
+const DEPRIORITIZED = [
+  'density',           // kPa/m, psi/ft → pressureGradient wins
+  'formationDensity',  // same data as density
+  'concentration',     // ppm → partsPer wins
+  'gasConcentration',  // ppm → partsPer wins; % → proportion wins
+  'force',             // g → mass wins
+  'gravity',           // g → mass wins
+  'gasVolume',         // gal/bbl/m3 → volume wins
+  'spontaneousPotential', // mV → voltage wins
+];
+```
+
+Callers who need the specialised measure must pass it explicitly, e.g. `convert(value, 'bbl', 'm3', 'gasVolume')`.
+
+### Fix (Python)
+
+Python's `converter.py` iterates definitions in filesystem order too. The same shared-key conflicts exist. The recommended fix is to apply an equivalent priority ordering when building the unit lookup index, or to require an explicit `measure` argument for ambiguous units.
+
+### Future-Proofing
+
+If new definition files are added that share unit keys with existing measures, add the **less general** measure to the `DEPRIORITIZED` list. The long-term clean solution is to remove overlapping unit keys from specialised measures entirely and require callers to pass `measure` explicitly for gas-accounting or domain-specific conversions.
+
+---
+
 ## Final Stats
 
 | Metric | Value |
