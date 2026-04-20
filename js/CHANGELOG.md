@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/corva-ai/corva-convert-units/compare/js@v3.0.0...js@v3.0.1) (2026-04-20)
+
+
+### Bug Fixes
+
+* set up tsup to gen .cjs files ([#118](https://github.com/corva-ai/corva-convert-units/issues/118)) ([2455cb1](https://github.com/corva-ai/corva-convert-units/commit/2455cb1736e2e005c3be4fc37f293cfaf6ff5242))
+
 ## [3.0.0](https://github.com/corva-ai/corva-convert-units/compare/js@v2.2.0...js@v3.0.0) (2026-04-20)
 
 
