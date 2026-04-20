@@ -218,18 +218,24 @@ Callers who need the specialised measure must pass it explicitly, e.g. `convert(
 
 ### Fix (Python)
 
-`py/src/corva_unit_converter/loader.py` applies the same deprioritization after loading. Note that the original Python repo (`corva-convert-units-py`) had a different hardcoded measure order from the original JS repo — notably `density` before `pressure_gradient` and `force` before `mass`. Both are now aligned to the same priority as JS:
+`py/src/corva_unit_converter/loader.py` applies the same deprioritization mechanism. Python follows its **own** original library order (`corva-convert-units-py`), which differs from JS in three cases:
+
+| Unit(s) | JS wins | Python wins | Reason |
+|---|---|---|---|
+| `g` | `mass` (gram) | `force` (g-force) | Old JS had mass first; old PY had force first |
+| `kPa/m`, `psi/ft` | `pressureGradient` | `density` | Old JS had pressureGradient first; old PY had density first |
+| `%`, `ppm` | `proportion` / `partsPer` | `gasConcentration` | Old PY only had gasConcentration; proportion/partsPer were JS-only |
 
 ```python
 _DEPRIORITIZED = [
-    "density",
-    "formation_density",
-    "concentration",
-    "gas_concentration",
-    "force",
-    "gravity",
-    "gas_volume",
-    "spontaneous_potential",
+    "mass",               # g → force (g-force) wins, per original Python library order
+    "gravity",            # g → force wins (gravity not in original Python library)
+    "pressure_gradient",  # kPa/m, psi/ft → density wins, per original Python library order
+    "concentration",      # ppm → gas_concentration wins (not in original Python library)
+    "parts_per",          # ppm → gas_concentration wins (not in original Python library)
+    "proportion",         # % → gas_concentration wins, per original Python library order
+    "gas_volume",         # gal/bbl/m3 → volume wins (volume is new; gives correct liquid anchors)
+    "spontaneous_potential",  # mV → voltage wins (not in original Python library)
 ]
 ```
 
