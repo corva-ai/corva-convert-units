@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/corva-ai/corva-convert-units/compare/js@v3.0.1...js@v3.0.2) (2026-04-20)
+
+
+### Bug Fixes
+
+* restore legacy lookup priority for js ([#120](https://github.com/corva-ai/corva-convert-units/issues/120)) ([bb30727](https://github.com/corva-ai/corva-convert-units/commit/bb30727b498bcbeafdd3bc591e7f620260aedaf4))
+
 ## [3.0.1](https://github.com/corva-ai/corva-convert-units/compare/js@v3.0.0...js@v3.0.1) (2026-04-20)
 
 
