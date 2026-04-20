@@ -17,31 +17,6 @@ def _get_definitions() -> dict[str, dict[str, Any]]:
     return _definitions
 
 
-def _snake_to_camel(name: str) -> str:
-    """Convert snake_case to camelCase (e.g. acoustic_slowness → acousticSlowness)."""
-    parts = name.split("_")
-    return parts[0] + "".join(p.capitalize() for p in parts[1:])
-
-
-def _camel_to_snake(name: str) -> str:
-    """Convert camelCase to snake_case (e.g. acousticSlowness → acoustic_slowness)."""
-    import re
-    s = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1_\2", name)
-    return re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", s).lower()
-
-
-def _normalize_measure(measure: str) -> str:
-    """Return the canonical (camelCase) measure key for *measure*.
-
-    Accepts both camelCase and legacy snake_case names so that callers using
-    the old API (e.g. ``'acoustic_slowness'``) continue to work.
-    """
-    definitions = _get_definitions()
-    if measure in definitions:
-        return measure
-    camel = _snake_to_camel(measure)
-    return camel if camel in definitions else measure
-
 
 def _resolve_abbr_in_measure(abbr: str, measure_name: str) -> str:
     systems = _get_definitions().get(measure_name)
@@ -96,8 +71,6 @@ def get_unit(
     definitions = _get_definitions()
 
     if measure:
-        measure = _normalize_measure(measure)
-    if measure:
         resolved = _resolve_abbr_in_measure(abbr, measure)
         systems = definitions.get(measure, {})
 
@@ -151,8 +124,6 @@ def convert(
     """Convert a value from one unit to another."""
     definitions = _get_definitions()
 
-    if measure is not None:
-        measure = _normalize_measure(measure)
     if measure is not None and measure not in definitions:
         logging.info(
             "Invalid measure: %s. Available: %s",
@@ -190,14 +161,14 @@ def convert(
 
 def get_measures() -> list[str]:
     """Return available measure names in snake_case (e.g. 'acoustic_slowness')."""
-    return [_camel_to_snake(k) for k in _get_definitions().keys()]
+    return list(_get_definitions().keys())
 
 
 def describe(
     abbr: str, measure: Optional[str] = None,
 ) -> dict[str, Any] | None:
     """Return unit metadata dict."""
-    resp = get_unit(abbr, _normalize_measure(measure) if measure else None)
+    resp = get_unit(abbr, measure)
     if not resp:
         return None
     return {
@@ -215,8 +186,6 @@ def list_units(measure: Optional[str] = None) -> list[dict[str, Any]]:
     definitions = _get_definitions()
     result: list[dict[str, Any]] = []
 
-    if measure:
-        measure = _normalize_measure(measure)
     for measure_name, systems in definitions.items():
         if measure and measure != measure_name:
             continue
@@ -247,8 +216,6 @@ def list_units_with_aliases(
     definitions = _get_definitions()
     result: list[dict[str, Any]] = []
 
-    if measure:
-        measure = _normalize_measure(measure)
     for measure_name, systems in definitions.items():
         if measure and measure != measure_name:
             continue
@@ -278,8 +245,6 @@ def possibilities(measure: Optional[str] = None) -> list[str]:
     definitions = _get_definitions()
     result: list[str] = []
 
-    if measure:
-        measure = _normalize_measure(measure)
     for measure_name, systems in definitions.items():
         if measure and measure != measure_name:
             continue
@@ -354,7 +319,7 @@ def to_best(
     exclude: Optional[list[str]] = None,
 ) -> Optional[dict[str, Any]]:
     """Convert to the 'best' unit — smallest value >= 1 in the same system."""
-    origin = get_unit(unit_from, _normalize_measure(measure) if measure else None)
+    origin = get_unit(unit_from, measure)
     if not origin:
         return None
 
@@ -382,67 +347,3 @@ def to_best(
     return best
 
 
-class Converter:
-    """Backward-compatible class wrapper around the functional API."""
-
-    def convert(
-        self,
-        unit_from: str,
-        unit_to: str,
-        value: float,
-        measure: Optional[str] = None,
-    ) -> float | None:
-        return convert(value, unit_from, unit_to, measure)
-
-    @staticmethod
-    def get_unit(
-        abbr: str, measure: Optional[str] = None,
-    ) -> dict[str, Any] | None:
-        return get_unit(abbr, measure)
-
-    @staticmethod
-    def get_measures() -> list[str]:
-        return get_measures()
-
-    @staticmethod
-    def describe(
-        abbr: str, measure: Optional[str] = None,
-    ) -> dict[str, Any] | None:
-        return describe(abbr, measure)
-
-    @staticmethod
-    def list_units(measure: Optional[str] = None) -> list[dict[str, Any]]:
-        return list_units(measure)
-
-    @staticmethod
-    def list_units_with_aliases(
-        measure: Optional[str] = None,
-    ) -> list[dict[str, Any]]:
-        return list_units_with_aliases(measure)
-
-    @staticmethod
-    def possibilities(measure: Optional[str] = None) -> list[str]:
-        return possibilities(measure)
-
-    @staticmethod
-    def get_unit_key_by_alias(alias: str) -> Optional[str]:
-        return get_unit_key_by_alias(alias)
-
-    @staticmethod
-    def get_unit_for_pair(
-        abbr_one: str, abbr_two: str,
-    ) -> Optional[tuple[dict[str, Any], dict[str, Any]]]:
-        return get_unit_for_pair(abbr_one, abbr_two)
-
-    @staticmethod
-    def bucket_mapping() -> dict[str, Any]:
-        return bucket_mapping()
-
-    @staticmethod
-    def to_best(
-        value: float,
-        unit_from: str,
-        measure: Optional[str] = None,
-        exclude: Optional[list[str]] = None,
-    ) -> Optional[dict[str, Any]]:
-        return to_best(value, unit_from, measure, exclude)

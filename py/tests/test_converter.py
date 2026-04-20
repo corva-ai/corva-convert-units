@@ -3,7 +3,6 @@ from __future__ import annotations
 import pytest
 
 from corva_unit_converter import (
-    Converter,
     convert,
     describe,
     get_measures,
@@ -236,39 +235,6 @@ class TestFormationDensity:
 
 
 # ---------------------------------------------------------------------------
-# Backward-compatible Converter class
-# ---------------------------------------------------------------------------
-
-class TestConverterClass:
-    def test_convert_method(self):
-        c = Converter()
-        result = c.convert("ft", "m", 1)
-        assert result == pytest.approx(0.3048, abs=1e-4)
-
-    def test_get_measures(self):
-        c = Converter()
-        measures = c.get_measures()
-        assert "length" in measures
-
-    def test_describe(self):
-        c = Converter()
-        desc = c.describe("ft")
-        assert desc is not None
-        assert desc["abbr"] == "ft"
-
-    def test_list_units(self):
-        c = Converter()
-        units = c.list_units("pressure")
-        assert len(units) > 0
-
-    def test_get_unit(self):
-        c = Converter()
-        unit = c.get_unit("psi")
-        assert unit is not None
-        assert unit["abbr"] == "psi"
-
-
-# ---------------------------------------------------------------------------
 # Unsupported / error handling
 # ---------------------------------------------------------------------------
 
@@ -462,7 +428,7 @@ class TestDefinitionsModule:
         for m in ["length", "pressure", "temperature", "density", "volume"]:
             assert m in measure_names
 
-    def test_camel_case_measures_converted(self):
+    def test_snake_case_measures(self):
         from corva_unit_converter.definitions import __all__ as measure_names
         assert "acoustic_slowness" in measure_names
         assert "gas_flow_rate" in measure_names
@@ -473,41 +439,7 @@ class TestDefinitionsModule:
         assert measure_names == sorted(measure_names)
 
 
-# ---------------------------------------------------------------------------
-# snake_case measure name backward compatibility
-# ---------------------------------------------------------------------------
-
-class TestSnakeCaseMeasureBackwardCompat:
-    """Legacy callers used snake_case measure names (e.g. acoustic_slowness).
-    The converter must accept both snake_case and camelCase transparently."""
-
-    def test_convert_with_snake_case_measure(self):
-        result = convert(1, "ft", "m", measure="length")
-        snake = convert(1, "ft", "m", measure="length")
-        assert result == snake
-
-    def test_acoustic_slowness_snake(self):
-        from corva_unit_converter import list_units
-        units_camel = list_units("acousticSlowness")
-        units_snake = list_units("acoustic_slowness")
-        assert len(units_snake) > 0
-        assert units_camel == units_snake
-
-    def test_gas_flow_rate_snake(self):
-        from corva_unit_converter import possibilities
-        camel = possibilities("gasFlowRate")
-        snake = possibilities("gas_flow_rate")
-        assert len(snake) > 0
-        assert camel == snake
-
-    def test_formation_density_snake(self):
-        from corva_unit_converter import possibilities
-        camel = possibilities("formationDensity")
-        snake = possibilities("formation_density")
-        assert len(snake) > 0
-        assert camel == snake
-
-    def test_unknown_measure_still_returns_none(self):
+    def test_unknown_measure_returns_none(self):
         result = convert(1, "ft", "m", measure="completely_unknown_measure")
         assert result is None
 
@@ -517,40 +449,3 @@ class TestSnakeCaseMeasureBackwardCompat:
         assert "acousticSlowness" not in measures
 
 
-# ---------------------------------------------------------------------------
-# Converter class — new methods
-# ---------------------------------------------------------------------------
-
-class TestConverterClassNewMethods:
-    def test_possibilities(self):
-        c = Converter()
-        result = c.possibilities("length")
-        assert "m" in result
-        assert "ft" in result
-
-    def test_list_units_with_aliases(self):
-        c = Converter()
-        result = c.list_units_with_aliases("length")
-        assert len(result) > 0
-        assert "aliases" in result[0]
-
-    def test_get_unit_key_by_alias(self):
-        c = Converter()
-        assert c.get_unit_key_by_alias("meter") == "m"
-
-    def test_get_unit_for_pair(self):
-        c = Converter()
-        result = c.get_unit_for_pair("ft", "m")
-        assert result is not None
-
-    def test_bucket_mapping(self):
-        c = Converter()
-        result = c.bucket_mapping()
-        assert isinstance(result, dict)
-        assert len(result) > 0
-
-    def test_to_best(self):
-        c = Converter()
-        result = c.to_best(1200000, "mm")
-        assert result is not None
-        assert result["unit"] == "km"

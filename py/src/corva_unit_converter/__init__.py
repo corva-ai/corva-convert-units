@@ -1,5 +1,4 @@
 from .converter import (
-    Converter,
     bucket_mapping,
     convert,
     describe,
@@ -15,7 +14,6 @@ from .converter import (
 from . import definitions
 
 __all__ = [
-    "Converter",
     "bucket_mapping",
     "convert",
     "definitions",
