@@ -218,7 +218,20 @@ Callers who need the specialised measure must pass it explicitly, e.g. `convert(
 
 ### Fix (Python)
 
-Python's `converter.py` iterates definitions in filesystem order too. The same shared-key conflicts exist. The recommended fix is to apply an equivalent priority ordering when building the unit lookup index, or to require an explicit `measure` argument for ambiguous units.
+`py/src/corva_unit_converter/loader.py` applies the same deprioritization after loading. Note that the original Python repo (`corva-convert-units-py`) had a different hardcoded measure order from the original JS repo — notably `density` before `pressure_gradient` and `force` before `mass`. Both are now aligned to the same priority as JS:
+
+```python
+_DEPRIORITIZED = [
+    "density",
+    "formation_density",
+    "concentration",
+    "gas_concentration",
+    "force",
+    "gravity",
+    "gas_volume",
+    "spontaneous_potential",
+]
+```
 
 ### Future-Proofing
 

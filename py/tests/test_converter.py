@@ -402,6 +402,91 @@ class TestToBest:
 
 
 # ---------------------------------------------------------------------------
+# Lookup priority — shared unit keys must resolve to the correct measure
+# ---------------------------------------------------------------------------
+
+class TestLookupPriority:
+    """
+    Several unit keys appear in more than one measure with different anchor
+    chains. The loader deprioritises the specialised measures so that the
+    general measure always wins when no explicit measure is passed.
+
+    Python follows the original corva-convert-units-py library order.
+    See definitions/SYNC_REPORT.md — "Known Issue" section for full details.
+    """
+
+    # --- volume: liquid anchors must win over gas-accounting anchors ----------
+
+    def test_m3_resolves_to_volume(self):
+        assert describe("m3")["measure"] == "volume"
+
+    def test_bbl_resolves_to_volume(self):
+        assert describe("bbl")["measure"] == "volume"
+
+    def test_gal_resolves_to_volume(self):
+        assert describe("gal")["measure"] == "volume"
+
+    def test_m3_to_bbl(self):
+        # gas_volume anchors give ~630.36 — liquid volume anchors give the correct 628.98
+        result = convert(100, "m3", "bbl")
+        assert result == pytest.approx(628.981, abs=1e-2)
+
+    def test_gal_to_l(self):
+        # gas_volume anchors give ~376.77 — liquid volume anchors give the correct 378.54
+        result = convert(100, "gal", "l")
+        assert result == pytest.approx(378.541, abs=1e-2)
+
+    def test_bbl_to_fl_oz(self):
+        result = convert(0.05, "bbl", "fl-oz")
+        assert result == pytest.approx(268.8, abs=1e-4)
+
+    def test_gas_volume_still_reachable_with_explicit_measure(self):
+        # When measure is specified, gas_volume anchors are used
+        result = convert(100, "m3", "bbl", measure="gas_volume")
+        assert result is not None
+        assert result == pytest.approx(630.357, abs=1e-2)
+
+    # --- voltage: mV must resolve to voltage, not spontaneous_potential -------
+
+    def test_mV_resolves_to_voltage(self):
+        assert describe("mV")["measure"] == "voltage"
+
+    def test_V_to_mV(self):
+        assert convert(1, "V", "mV") == pytest.approx(1000, abs=1e-6)
+
+    # --- force: g must resolve to force (g-force) per original Python order ---
+
+    def test_g_resolves_to_force(self):
+        assert describe("g")["measure"] == "force"
+
+    def test_g_to_N(self):
+        # 1 g-force = 9.80665 N
+        result = convert(1, "g", "N")
+        assert result == pytest.approx(9.80665, abs=1e-4)
+
+    # --- density: kPa/m and psi/ft must resolve to density -------------------
+
+    def test_kPa_per_m_resolves_to_density(self):
+        assert describe("kPa/m")["measure"] == "density"
+
+    def test_psi_per_ft_resolves_to_density(self):
+        assert describe("psi/ft")["measure"] == "density"
+
+    # --- gas_concentration: ppm and % must resolve to gas_concentration -------
+
+    def test_ppm_resolves_to_gas_concentration(self):
+        assert describe("ppm")["measure"] == "gas_concentration"
+
+    def test_percent_resolves_to_gas_concentration(self):
+        assert describe("%")["measure"] == "gas_concentration"
+
+    # --- ft → m: exact SI value -----------------------------------------------
+
+    def test_ft_to_m_exact(self):
+        assert convert(1, "ft", "m") == pytest.approx(0.3048, abs=1e-10)
+
+
+# ---------------------------------------------------------------------------
 # definitions module backward compatibility
 # ---------------------------------------------------------------------------
 

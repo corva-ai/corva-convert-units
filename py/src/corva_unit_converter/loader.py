@@ -51,6 +51,36 @@ def _process_anchors(definition: dict[str, Any]) -> dict[str, Any]:
     return definition
 
 
+_DEPRIORITIZED = [
+    "mass",               # g → force (g-force) wins, per original Python library order
+    "gravity",            # g → force wins (gravity not in original Python library)
+    "pressure_gradient",  # kPa/m, psi/ft → density wins, per original Python library order
+    "concentration",      # ppm → gas_concentration wins (not in original Python library)
+    "parts_per",          # ppm → gas_concentration wins (not in original Python library)
+    "proportion",         # % → gas_concentration wins, per original Python library order
+    "gas_volume",         # gal/bbl/m3 → volume wins (volume is new; gives correct liquid anchors)
+    "spontaneous_potential",  # mV → voltage wins (not in original Python library)
+]
+"""
+Measures moved to the end of the lookup order so that "first occurrence wins"
+in get_unit() resolves shared unit keys correctly.
+
+Priority follows the original corva-convert-units-py hardcoded measure order.
+For measures not present in the original library, the correct general measure wins.
+
+  mass / gravity          — share g with force; force (g-force) wins
+  pressure_gradient       — shares kPa/m and psi/ft with density; density wins
+  concentration           — shares ppm with gas_concentration; gas_concentration wins
+  parts_per               — shares ppm with gas_concentration; gas_concentration wins
+  proportion              — shares % with gas_concentration; gas_concentration wins
+  gas_volume              — shares gal/bbl/m3 with volume; volume wins (correct liquid anchors)
+  spontaneous_potential   — shares mV with voltage; voltage wins
+
+Callers who need the specialised measure must pass it explicitly, e.g.
+  convert(value, 'bbl', 'm3', 'gas_volume')
+"""
+
+
 def load_definitions() -> dict[str, dict[str, Any]]:
     defs_dir = _find_definitions_dir()
     definitions: dict[str, dict[str, Any]] = {}
@@ -63,6 +93,9 @@ def load_definitions() -> dict[str, dict[str, Any]]:
 
     if "density" in definitions:
         definitions["formation_density"] = definitions["density"]
+
+    deprioritized = {k: definitions.pop(k) for k in _DEPRIORITIZED if k in definitions}
+    definitions.update(deprioritized)
 
     return definitions
 
