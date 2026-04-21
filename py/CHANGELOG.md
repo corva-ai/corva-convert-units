@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.3](https://github.com/corva-ai/corva-convert-units/compare/py@v3.0.2...py@v3.0.3) (2026-04-21)
+
+
+### Bug Fixes
+
+* restore legacy lookup priority for py ([#122](https://github.com/corva-ai/corva-convert-units/issues/122)) ([e6b0d55](https://github.com/corva-ai/corva-convert-units/commit/e6b0d55c7232a92eb477e5810fab3ea82ac88419))
+
 ## [3.0.2](https://github.com/corva-ai/corva-convert-units/compare/py@v3.0.1...py@v3.0.2) (2026-04-20)
 
 
