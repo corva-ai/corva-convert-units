@@ -298,6 +298,96 @@ describe('listUnitsWithAliases()', () => {
   });
 });
 
+describe('lookup priority — shared unit keys resolve to the correct measure', () => {
+  /**
+   * Several unit keys appear in more than one measure with different anchor
+   * chains. The loader deprioritises the specialised measures so that the
+   * general measure always wins when no explicit measure is passed.
+   *
+   * See definitions/SYNC_REPORT.md — "Known Issue" section for full details.
+   */
+
+  // --- volume: liquid anchors must win over gas-accounting anchors ----------
+
+  it('m3 resolves to volume (not gasVolume)', () => {
+    expect(describeUnit('m3').measure).toBe('volume');
+  });
+
+  it('bbl resolves to volume (not gasVolume)', () => {
+    expect(describeUnit('bbl').measure).toBe('volume');
+  });
+
+  it('gal resolves to volume (not gasVolume)', () => {
+    expect(describeUnit('gal').measure).toBe('volume');
+  });
+
+  it('m3→bbl uses liquid anchors (~628.98, not gas-accounting ~630.36)', () => {
+    expect(convert(100, 'm3', 'bbl')).toBeCloseTo(628.981, 2);
+  });
+
+  it('gal→l uses liquid anchors (~378.54, not gas-accounting ~376.77)', () => {
+    expect(convert(100, 'gal', 'l')).toBeCloseTo(378.541, 2);
+  });
+
+  it('bbl→fl-oz uses liquid anchors (268.8)', () => {
+    expect(convert(0.05, 'bbl', 'fl-oz')).toBeCloseTo(268.8, 4);
+  });
+
+  it('gasVolume is still reachable with explicit measure', () => {
+    expect(convert(100, 'm3', 'bbl', 'gasVolume')).toBeCloseTo(630.357, 2);
+  });
+
+  // --- voltage: mV must resolve to voltage, not spontaneousPotential --------
+
+  it('mV resolves to voltage (not spontaneousPotential)', () => {
+    expect(describeUnit('mV').measure).toBe('voltage');
+  });
+
+  it('V→mV converts correctly (1000)', () => {
+    expect(convert(1, 'V', 'mV')).toBeCloseTo(1000, 6);
+  });
+
+  // --- mass: g must resolve to mass (gram) per original JS library order ----
+
+  it('g resolves to mass (gram, not force g-force)', () => {
+    expect(describeUnit('g').measure).toBe('mass');
+  });
+
+  it('g→kg: 1000 g = 1 kg (gram conversion, not g-force)', () => {
+    expect(convert(1000, 'g', 'kg')).toBeCloseTo(1, 6);
+  });
+
+  // --- pressureGradient: kPa/m and psi/ft must resolve to pressureGradient --
+
+  it('kPa/m resolves to pressureGradient (not density)', () => {
+    expect(describeUnit('kPa/m').measure).toBe('pressureGradient');
+  });
+
+  it('psi/ft resolves to pressureGradient (not density)', () => {
+    expect(describeUnit('psi/ft').measure).toBe('pressureGradient');
+  });
+
+  // --- proportion: % must resolve to proportion; partsPer wins for ppm ------
+
+  it('% resolves to proportion (not gasConcentration)', () => {
+    expect(describeUnit('%').measure).toBe('proportion');
+  });
+
+  it('%→Fraction: 50% = 0.5', () => {
+    expect(convert(50, '%', 'Fraction')).toBeCloseTo(0.5, 6);
+  });
+
+  it('ppm resolves to partsPer (not concentration or gasConcentration)', () => {
+    expect(describeUnit('ppm').measure).toBe('partsPer');
+  });
+
+  // --- ft → m: exact SI value -----------------------------------------------
+
+  it('ft→m is exactly 0.3048 (SI international foot)', () => {
+    expect(convert(1, 'ft', 'm')).toBe(0.3048);
+  });
+});
+
 describe('error cases', () => {
   it('throws for unsupported unit', () => {
     expect(() => convert(1, 'xyz_invalid', 'm')).toThrow(/Unsupported unit/);

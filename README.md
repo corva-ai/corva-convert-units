@@ -86,6 +86,35 @@ bucket_mapping()                                # {'Length': ['m', 'ft', ...], .
 get_unit_key_by_alias('meter')                  # 'm'
 ```
 
+## Shared unit keys and measure priority
+
+Some unit abbreviations appear in more than one measure with **different anchor chains**. For example, `bbl` exists in both `volume` (liquid barrel, 158.987 L) and `gasVolume` (gas-accounting barrel, MCF-based). When no `measure` is specified, the library resolves to the **general-purpose measure** using a fixed priority order:
+
+| Unit(s) | Resolves to (JS) | Resolves to (Python) |
+|---|---|---|
+| `gal`, `bbl`, `m3`, `l`, `fl-oz`, … | `volume` | `volume` |
+| `mV` | `voltage` | `voltage` |
+| `g` | `mass` (gram) | `force` (g-force) |
+| `kPa/m`, `psi/ft` | `pressureGradient` | `density` |
+| `%`, `ppm` | `proportion` / `partsPer` | `gasConcentration` |
+
+> [!NOTE]
+> JS and Python differ for `g`, `kPa/m`/`psi/ft`, and `%`/`ppm` because each follows its own original library's hardcoded measure order.
+
+To use a specialised measure, pass it explicitly:
+
+```typescript
+// JS
+convert(100, 'm3', 'bbl', 'gasVolume');   // gas-accounting barrels
+```
+
+```python
+# Python
+convert(100, 'm3', 'bbl', measure='gas_volume')   # gas-accounting barrels
+```
+
+See [`definitions/SYNC_REPORT.md`](definitions/SYNC_REPORT.md) for the full list of shared unit keys and the rationale behind the priority order.
+
 ## Development
 
 ### Prerequisites

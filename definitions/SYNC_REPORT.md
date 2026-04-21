@@ -218,7 +218,26 @@ Callers who need the specialised measure must pass it explicitly, e.g. `convert(
 
 ### Fix (Python)
 
-Python's `converter.py` iterates definitions in filesystem order too. The same shared-key conflicts exist. The recommended fix is to apply an equivalent priority ordering when building the unit lookup index, or to require an explicit `measure` argument for ambiguous units.
+`py/src/corva_unit_converter/loader.py` applies the same deprioritization mechanism. Python follows its **own** original library order (`corva-convert-units-py`), which differs from JS in three cases:
+
+| Unit(s) | JS wins | Python wins | Reason |
+|---|---|---|---|
+| `g` | `mass` (gram) | `force` (g-force) | Old JS had mass first; old PY had force first |
+| `kPa/m`, `psi/ft` | `pressureGradient` | `density` | Old JS had pressureGradient first; old PY had density first |
+| `%`, `ppm` | `proportion` / `partsPer` | `gasConcentration` | Old PY only had gasConcentration; proportion/partsPer were JS-only |
+
+```python
+_DEPRIORITIZED = [
+    "mass",               # g → force (g-force) wins, per original Python library order
+    "gravity",            # g → force wins (gravity not in original Python library)
+    "pressure_gradient",  # kPa/m, psi/ft → density wins, per original Python library order
+    "concentration",      # ppm → gas_concentration wins (not in original Python library)
+    "parts_per",          # ppm → gas_concentration wins (not in original Python library)
+    "proportion",         # % → gas_concentration wins, per original Python library order
+    "gas_volume",         # gal/bbl/m3 → volume wins (volume is new; gives correct liquid anchors)
+    "spontaneous_potential",  # mV → voltage wins (not in original Python library)
+]
+```
 
 ### Future-Proofing
 
