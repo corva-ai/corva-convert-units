@@ -94,12 +94,15 @@ Some unit abbreviations appear in more than one measure with **different anchor 
 |---|---|---|
 | `gal`, `bbl`, `m3`, `l`, `fl-oz`, … | `volume` | `volume` |
 | `mV` | `voltage` | `voltage` |
-| `g` | `mass` (gram) | `force` (g-force) |
-| `kPa/m`, `psi/ft` | `pressureGradient` | `density` |
-| `%`, `ppm` | `proportion` / `partsPer` | `gasConcentration` |
+| `%` | `gasConcentration` | `gasConcentration` |
+| `g` | `mass` (gram) | `mass` (gram) |
+| `kPa/m`, `psi/ft` | `pressureGradient` | `pressureGradient` |
+| `ppm` | `partsPer` | `gasConcentration` |
 
 > [!NOTE]
-> JS and Python differ for `g`, `kPa/m`/`psi/ft`, and `%`/`ppm` because each follows its own original library's hardcoded measure order.
+> The only difference between JS and Python is `ppm`: each follows its own original library's behavior (old JS resolved it via `partsPer`; old Python via `gasConcentration`).
+>
+> Cross-measure pairs still convert when a single measure defines both units — e.g. `%→Fraction` (both in `proportion`) and `bbl→Mscf` (both in `gasVolume`) work without an explicit `measure`.
 
 To use a specialised measure, pass it explicitly:
 

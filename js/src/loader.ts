@@ -36,7 +36,10 @@ const loadDefinitions = (): Record<string, MeasureDefinition> => {
   //   density / formationDensity — share kPa/m and psi/ft with pressureGradient;
   //                                pressureGradient anchors must win
   //   concentration              — shares ppm with partsPer; partsPer must win
-  //   gasConcentration           — shares ppm with partsPer; partsPer must win
+  //   gasConcentration           — shares ppm with partsPer; partsPer must win.
+  //                                Kept BEFORE proportion so that % resolves to
+  //                                gasConcentration, matching the original library order.
+  //   proportion                 — shares % with gasConcentration; gasConcentration must win
   //   force / gravity            — share g with mass; mass (gram) must win
   //   gasVolume                  — shares gal/bbl/m3 with volume; liquid anchors must win
   //   spontaneousPotential       — shares mV with voltage; voltage must win
@@ -45,6 +48,7 @@ const loadDefinitions = (): Record<string, MeasureDefinition> => {
     'formationDensity',
     'concentration',
     'gasConcentration',
+    'proportion',
     'force',
     'gravity',
     'gasVolume',

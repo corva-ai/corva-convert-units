@@ -195,7 +195,7 @@ The original separate JS library resolved unit keys by iterating a **hardcoded m
 | `g` | `mass` (gram, `to_anchor=1`) | `force` / `gravity` (g-force, `to_anchor=9.80665`) | Completely different physical quantities |
 | `kPa/m`, `psi/ft` | `pressureGradient` | `density` | Different anchor chains; same units used as equivalent mud weight |
 | `ppm` | `partsPer` | `concentration` / `gasConcentration` | gasConcentration uses a 0.0001 scale factor |
-| `%` | `proportion` | `gasConcentration` | Same `to_anchor`; proportion is the more general measure |
+| `%` | `gasConcentration` | `proportion` | Original library order: gasConcentration wins so `%→%EMA`/`%→Units` conversions work; `%→Fraction` still works via pair lookup in proportion |
 
 ### Fix (JS)
 
@@ -206,7 +206,8 @@ const DEPRIORITIZED = [
   'density',           // kPa/m, psi/ft → pressureGradient wins
   'formationDensity',  // same data as density
   'concentration',     // ppm → partsPer wins
-  'gasConcentration',  // ppm → partsPer wins; % → proportion wins
+  'gasConcentration',  // ppm → partsPer wins; kept BEFORE proportion so % → gasConcentration
+  'proportion',        // % → gasConcentration wins (original library order)
   'force',             // g → mass wins
   'gravity',           // g → mass wins
   'gasVolume',         // gal/bbl/m3 → volume wins
@@ -214,30 +215,35 @@ const DEPRIORITIZED = [
 ];
 ```
 
+The pair lookup (`getUnitForPair`) additionally searches every measure for one containing **both** unit keys, so cross-measure conversions like `%→Fraction` (both in `proportion`) and `bbl→Mscf` (both in `gasVolume`) work even though the units' global lookups resolve to different measures.
+
 Callers who need the specialised measure must pass it explicitly, e.g. `convert(value, 'bbl', 'm3', 'gasVolume')`.
 
 ### Fix (Python)
 
-`py/src/corva_unit_converter/loader.py` applies the same deprioritization mechanism. Python follows its **own** original library order (`corva-convert-units-py`), which differs from JS in three cases:
+`py/src/corva_unit_converter/loader.py` applies the same deprioritization mechanism, replicating the behavior of the original `corva-convert-units-py` library. Importantly, most of these collisions **did not exist** in the old Python library — the shared keys were introduced into the specialised measures by the definitions sync. Verified against the old repo's definition modules:
 
-| Unit(s) | JS wins | Python wins | Reason |
-|---|---|---|---|
-| `g` | `mass` (gram) | `force` (g-force) | Old JS had mass first; old PY had force first |
-| `kPa/m`, `psi/ft` | `pressureGradient` | `density` | Old JS had pressureGradient first; old PY had density first |
-| `%`, `ppm` | `proportion` / `partsPer` | `gasConcentration` | Old PY only had gasConcentration; proportion/partsPer were JS-only |
+- `g` existed **only in `mass`** (old PY `force` had no `g`; g-force came from JS) → mass wins
+- `kPa/m`, `psi/ft` existed **only in `pressure_gradient`** (old PY `density` had neither) → pressure_gradient wins
+- `ppm`, `%` resolved to `gas_concentration` (old `parts_per` was empty/unwired; `proportion` came later in the hardcoded order) → gas_concentration wins
+
+The **only** remaining JS/Python difference is `ppm`: JS resolves it to `partsPer` (per old JS order), Python to `gas_concentration` (per old PY behavior).
 
 ```python
 _DEPRIORITIZED = [
-    "mass",               # g → force (g-force) wins, per original Python library order
-    "gravity",            # g → force wins (gravity not in original Python library)
-    "pressure_gradient",  # kPa/m, psi/ft → density wins, per original Python library order
-    "concentration",      # ppm → gas_concentration wins (not in original Python library)
-    "parts_per",          # ppm → gas_concentration wins (not in original Python library)
+    "density",            # kPa/m, psi/ft → pressure_gradient wins (old PY density had neither)
+    "formation_density",  # same data as density
+    "concentration",      # ppm → gas_concentration wins (concentration not in old PY)
+    "parts_per",          # ppm → gas_concentration wins (parts_per was unwired in old PY)
     "proportion",         # % → gas_concentration wins, per original Python library order
+    "force",              # g → mass (gram) wins (old PY force had no g; it came from JS)
+    "gravity",            # g → mass wins (gravity not in old PY)
     "gas_volume",         # gal/bbl/m3 → volume wins (volume is new; gives correct liquid anchors)
-    "spontaneous_potential",  # mV → voltage wins (not in original Python library)
+    "spontaneous_potential",  # mV → voltage wins (not in old PY)
 ]
 ```
+
+Python's `convert()` also re-resolves cross-measure pairs via `get_unit_for_pair()` (same semantics as JS): when the two units' global lookups land in different measures, it searches for a single measure defining both keys and uses that measure's anchors. If none exists (e.g. `ft` → `psi`), it returns `None` instead of silently computing a wrong value.
 
 ### Future-Proofing
 

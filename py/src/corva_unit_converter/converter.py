@@ -139,6 +139,19 @@ def convert(
     if origin["abbr"] == destination["abbr"]:
         return value
 
+    if origin["measure"] != destination["measure"]:
+        # Global lookups resolved the units to different measures. Search for a
+        # single measure that defines both keys (e.g. bbl and Mscf in gas_volume)
+        # and re-resolve so anchors come from one consistent measure.
+        pair = get_unit_for_pair(destination["abbr"], origin["abbr"])
+        if pair is None:
+            logging.info(
+                "Cannot convert incompatible measures of %s and %s",
+                destination["measure"], origin["measure"],
+            )
+            return None
+        destination, origin = pair
+
     result = value * origin["unit"]["to_anchor"]
 
     if "anchor_shift" in origin["unit"]:
