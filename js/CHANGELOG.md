@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/corva-ai/corva-convert-units/compare/js@v3.0.3...js@v3.1.0) (2026-07-14)
+
+
+### Features
+
+* **package.json:** upd name to @corva/convert-units ([#125](https://github.com/corva-ai/corva-convert-units/issues/125)) ([cc62a58](https://github.com/corva-ai/corva-convert-units/commit/cc62a58f859aac6f2e5e042d29f659393988962f))
+
 ## [3.0.3](https://github.com/corva-ai/corva-convert-units/compare/js@v3.0.2...js@v3.0.3) (2026-04-21)
 
 
