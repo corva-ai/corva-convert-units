@@ -52,29 +52,31 @@ def _process_anchors(definition: dict[str, Any]) -> dict[str, Any]:
 
 
 _DEPRIORITIZED = [
-    "mass",               # g → force (g-force) wins, per original Python library order
-    "gravity",            # g → force wins (gravity not in original Python library)
-    "pressure_gradient",  # kPa/m, psi/ft → density wins, per original Python library order
-    "concentration",      # ppm → gas_concentration wins (not in original Python library)
-    "parts_per",          # ppm → gas_concentration wins (not in original Python library)
+    "density",            # kPa/m, psi/ft → pressure_gradient wins (old PY density had neither)
+    "formation_density",  # same data as density
+    "concentration",      # ppm → gas_concentration wins (concentration not in old PY)
+    "parts_per",          # ppm → gas_concentration wins (parts_per was unwired in old PY)
     "proportion",         # % → gas_concentration wins, per original Python library order
+    "force",              # g → mass (gram) wins (old PY force had no g; it came from JS)
+    "gravity",            # g → mass wins (gravity not in old PY)
     "gas_volume",         # gal/bbl/m3 → volume wins (volume is new; gives correct liquid anchors)
-    "spontaneous_potential",  # mV → voltage wins (not in original Python library)
+    "spontaneous_potential",  # mV → voltage wins (not in old PY)
 ]
 """
 Measures moved to the end of the lookup order so that "first occurrence wins"
 in get_unit() resolves shared unit keys correctly.
 
-Priority follows the original corva-convert-units-py hardcoded measure order.
-For measures not present in the original library, the correct general measure wins.
+Priority replicates the behavior of the original corva-convert-units-py library.
+Several of these collisions did not exist there at all — the shared keys were
+added to the specialised measures during the definitions sync — so the measure
+that exclusively owned the key in the original library must keep winning:
 
-  mass / gravity          — share g with force; force (g-force) wins
-  pressure_gradient       — shares kPa/m and psi/ft with density; density wins
-  concentration           — shares ppm with gas_concentration; gas_concentration wins
-  parts_per               — shares ppm with gas_concentration; gas_concentration wins
-  proportion              — shares % with gas_concentration; gas_concentration wins
-  gas_volume              — shares gal/bbl/m3 with volume; volume wins (correct liquid anchors)
-  spontaneous_potential   — shares mV with voltage; voltage wins
+  density / formation_density — kPa/m, psi/ft belonged only to pressure_gradient
+  concentration / parts_per   — ppm resolved to gas_concentration
+  proportion                  — % resolved to gas_concentration (earlier in old order)
+  force / gravity             — g belonged only to mass (gram)
+  gas_volume                  — gal/bbl/m3 must use volume's liquid anchors
+  spontaneous_potential       — mV belonged only to voltage
 
 Callers who need the specialised measure must pass it explicitly, e.g.
   convert(value, 'bbl', 'm3', 'gas_volume')

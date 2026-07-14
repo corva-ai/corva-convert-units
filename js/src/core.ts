@@ -44,14 +44,29 @@ const getUnit = (abbr: string, measure?: string): ResolvedUnit | undefined => {
     if (!entry) throwUnsupportedCompatibilityError(abbr, measure);
     return entry;
   }
+  // Exact canonical key match wins before alias resolution, so e.g. '1/s'
+  // stays angularVelocity (unit key) rather than strokesRate ('strokes/sec' alias).
+  const direct = unitIndex.get(abbr);
+  if (direct) return direct;
   const canonical = aliasMap.get(abbr);
   return canonical !== undefined ? unitIndex.get(canonical) : undefined;
 };
 
+// Searches every measure (in priority order) for one containing BOTH unit keys.
+// This allows conversions between units whose global lookups resolve to different
+// measures, as long as some single measure defines both (e.g. % and Fraction in
+// proportion, or bbl and Mscf in gasVolume).
 const getUnitForPair = (abbrOne: string, abbrTwo: string): [ResolvedUnit, ResolvedUnit] | null => {
-  const one = unitIndex.get(abbrOne);
-  const two = unitIndex.get(abbrTwo);
-  return one && two && one.measure === two.measure ? [one, two] : null;
+  for (const entries of measureIndex.values()) {
+    let one: ResolvedUnit | undefined;
+    let two: ResolvedUnit | undefined;
+    for (const entry of entries) {
+      if (entry.abbr === abbrOne) one = entry;
+      else if (entry.abbr === abbrTwo) two = entry;
+      if (one && two) return [one, two];
+    }
+  }
+  return null;
 };
 
 const toPlainUnit = ({ abbr, measure, system, unit }: ResolvedUnit): PlainUnit => ({

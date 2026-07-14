@@ -94,12 +94,16 @@ Some unit abbreviations appear in more than one measure with **different anchor 
 |---|---|---|
 | `gal`, `bbl`, `m3`, `l`, `fl-oz`, … | `volume` | `volume` |
 | `mV` | `voltage` | `voltage` |
-| `g` | `mass` (gram) | `force` (g-force) |
-| `kPa/m`, `psi/ft` | `pressureGradient` | `density` |
-| `%`, `ppm` | `proportion` / `partsPer` | `gasConcentration` |
+| `%` | `gasConcentration` | `gasConcentration` |
+| `g` | `mass` (gram) | `mass` (gram) |
+| `kPa/m`, `psi/ft` | `pressureGradient` | `pressureGradient` |
+| `ppm` | `partsPer` | `gasConcentration` |
 
 > [!NOTE]
-> JS and Python differ for `g`, `kPa/m`/`psi/ft`, and `%`/`ppm` because each follows its own original library's hardcoded measure order.
+> Cross-measure pairs still convert when a single measure defines both units — e.g. `%→Fraction` (both in `proportion`) and `bbl→Mscf` (both in `gasVolume`) work without an explicit `measure`.
+
+> [!CAUTION]
+> `ppm` resolves **differently** in the two packages, and the scales are not the same: JS uses `partsPer` (1 ppm = 1 ppm, 1:1), while Python uses `gasConcentration` (1 ppm = 0.0001 %EMA). The same `ppm` conversion can return **different values in JS and Python**. Each package preserves its original library's behavior for backward compatibility. If your code runs in both languages, always pass an explicit `measure` when converting `ppm`.
 
 To use a specialised measure, pass it explicitly:
 
