@@ -1,5 +1,5 @@
 {
-  "name": "corva-convert-units",
+  "name": "@corva/convert-units",
   "version": "3.0.3",
   "description": "Convert between quantities in different units",
   "type": "module",

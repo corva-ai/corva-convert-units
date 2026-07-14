@@ -6,7 +6,7 @@ Monorepo for unit conversion libraries used by Corva. A single set of shared JSO
 
 ```
 definitions/     Shared JSON unit definitions
-js/              npm package: corva-convert-units
+js/              npm package: @corva/convert-units
 py/              PyPI package: corva-unit-converter
 scripts/         Build and validation scripts
 ```
@@ -15,7 +15,7 @@ scripts/         Build and validation scripts
 
 | Package | Language | Registry | Install |
 |---------|----------|----------|---------|
-| `corva-convert-units` | TypeScript/JS | npm | `npm install corva-convert-units` |
+| `@corva/convert-units` | TypeScript/JS | npm | `npm install @corva/convert-units` |
 | `corva-unit-converter` | Python | PyPI | `pip install corva-unit-converter` |
 
 ## Usage
@@ -35,7 +35,7 @@ import {
   toBest,
   bucketMapping,
   getUnitKeyByAlias,
-} from 'corva-convert-units';
+} from '@corva/convert-units';
 
 convert(1, 'ft', 'm');                          // 0.3048
 convert(100, 'C', 'F');                         // 212
