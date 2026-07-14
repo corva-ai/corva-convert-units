@@ -37,7 +37,7 @@ export default async ({github, context, core, glob, io, exec, require}) => {
   core.info('Setting up NPM auth...');
   await writeFile(
     path.resolve(WORKING_DIRECTORY, '.npmrc'),
-    `//registry.npmjs.org/:_authToken=${NPM_TOKEN}`
+    `@corva:registry=https://registry.npmjs.org/\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}`
   );
 
   core.info('Publishing NPM package...');
