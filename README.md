@@ -100,9 +100,10 @@ Some unit abbreviations appear in more than one measure with **different anchor 
 | `ppm` | `partsPer` | `gasConcentration` |
 
 > [!NOTE]
-> The only difference between JS and Python is `ppm`: each follows its own original library's behavior (old JS resolved it via `partsPer`; old Python via `gasConcentration`).
->
 > Cross-measure pairs still convert when a single measure defines both units — e.g. `%→Fraction` (both in `proportion`) and `bbl→Mscf` (both in `gasVolume`) work without an explicit `measure`.
+
+> [!CAUTION]
+> `ppm` resolves **differently** in the two packages, and the scales are not the same: JS uses `partsPer` (1 ppm = 1 ppm, 1:1), while Python uses `gasConcentration` (1 ppm = 0.0001 %EMA). The same `ppm` conversion can return **different values in JS and Python**. Each package preserves its original library's behavior for backward compatibility. If your code runs in both languages, always pass an explicit `measure` when converting `ppm`.
 
 To use a specialised measure, pass it explicitly:
 
