@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.2](https://github.com/corva-ai/corva-convert-units/compare/js@v3.1.1...js@v3.1.2) (2026-08-05)
+
+
+### Bug Fixes
+
+* **cinf-4886:** init patch release ([#130](https://github.com/corva-ai/corva-convert-units/issues/130)) ([f7e50ba](https://github.com/corva-ai/corva-convert-units/commit/f7e50bab635643bcd670bad211c81359ca67523f))
+
 ## [3.1.1](https://github.com/corva-ai/corva-convert-units/compare/js@v3.1.0...js@v3.1.1) (2026-07-14)
 
 
