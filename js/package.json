@@ -37,6 +37,10 @@
     "tsup": "^8.5.1",
     "typescript": "^5.8"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/corva-ai/corva-convert-units"
+  },
   "author": "Corva.ai",
   "license": "MIT"
 }
