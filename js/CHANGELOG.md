@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.3](https://github.com/corva-ai/corva-convert-units/compare/js@v3.1.2...js@v3.1.3) (2026-08-05)
+
+
+### Bug Fixes
+
+* **cinf-4886:** add missing repository to package json ([#132](https://github.com/corva-ai/corva-convert-units/issues/132)) ([e6f1ee8](https://github.com/corva-ai/corva-convert-units/commit/e6f1ee85235d52b3c9474c3f1d97076902cac138))
+
 ## [3.1.2](https://github.com/corva-ai/corva-convert-units/compare/js@v3.1.1...js@v3.1.2) (2026-08-05)
 
 
