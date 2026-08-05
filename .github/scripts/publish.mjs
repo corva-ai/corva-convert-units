@@ -60,7 +60,7 @@ export default async ({github, context, core, glob, io, exec, require}) => {
 
   if (stderr.includes('You cannot publish over the previously published versions')) {
     core.warning('This version was already published.');
-  } else if (stderr.includes('npm ERR!')) {
+  } else if (stderr.includes('npm ERR!') || stderr.includes('npm error')) {
     core.setFailed(`Failed to publish NPM package: ${stderr}`);
   } else {
     core.setFailed(`Failed with unknown error: ${stderr}`);

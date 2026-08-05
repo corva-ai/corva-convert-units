@@ -55,7 +55,7 @@ const getUnit = (abbr: string, measure?: string): ResolvedUnit | undefined => {
 // Searches every measure (in priority order) for one containing BOTH unit keys.
 // This allows conversions between units whose global lookups resolve to different
 // measures, as long as some single measure defines both (e.g. % and Fraction in
-// proportion, or bbl and Mscf in gasVolume)
+// proportion, or bbl and Mscf in gasVolume).
 const getUnitForPair = (abbrOne: string, abbrTwo: string): [ResolvedUnit, ResolvedUnit] | null => {
   for (const entries of measureIndex.values()) {
     let one: ResolvedUnit | undefined;
