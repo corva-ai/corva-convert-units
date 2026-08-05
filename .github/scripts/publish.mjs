@@ -2,7 +2,7 @@ import * as path from 'path';
 import { readFile, writeFile } from 'fs/promises';
 
 export default async ({github, context, core, glob, io, exec, require}) => {
-  const {TAG, NPM_TOKEN, WORKING_DIRECTORY} = process.env;
+  const {TAG, WORKING_DIRECTORY} = process.env;
 
   // Strip component prefix (js@v1.0.0 -> v1.0.0)
   const version = TAG.includes('@') ? TAG.split('@').pop() : TAG;
@@ -34,17 +34,23 @@ export default async ({github, context, core, glob, io, exec, require}) => {
   }
   core.notice(`Computed bump type for tag ${TAG} is ${bumpType}`);
 
-  core.info('Setting up NPM auth...');
   await writeFile(
     path.resolve(WORKING_DIRECTORY, '.npmrc'),
-    `@corva:registry=https://registry.npmjs.org/\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}`
+    '@corva:registry=https://registry.npmjs.org/\n'
   );
 
-  core.info('Publishing NPM package...');
-  const {stdout, stderr, exitCode} = await exec.getExecOutput(
+  const {NODE_AUTH_TOKEN: _nodeAuthToken, NPM_TOKEN: _npmToken, ...publishEnv} = process.env;
+
+  core.info('Publishing NPM package via OIDC trusted publishing...');
+  const {stderr, exitCode} = await exec.getExecOutput(
     'npm',
     ['publish', '--tag', bumpType, '--access', 'public'],
-    {silent: false, ignoreReturnCode: true, cwd: path.resolve(WORKING_DIRECTORY)}
+    {
+      silent: false,
+      ignoreReturnCode: true,
+      cwd: path.resolve(WORKING_DIRECTORY),
+      env: publishEnv,
+    }
   );
 
   if (exitCode === 0) {
