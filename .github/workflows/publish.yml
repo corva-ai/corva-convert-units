@@ -17,7 +17,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: Setup Environment
         uses: ./.github/actions/setup-environment
       - name: Sync definitions
@@ -25,7 +25,7 @@ jobs:
       - name: Build
         run: cd js && npm run build
       - name: Publish
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           TAG: '${{ github.ref_name }}'
           WORKING_DIRECTORY: 'js'
@@ -43,9 +43,9 @@ jobs:
       id-token: write
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Sync definitions
