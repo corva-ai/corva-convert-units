@@ -72,7 +72,7 @@
         "display": "psi"
       },
       "to_anchor": 0.001,
-      "aliases": ["psi", "PSI"]
+      "aliases": ["psi", "PSI", "PSIG", "psig", "PSIA", "psia"]
     },
     "psiAdjusted": {
       "name": {

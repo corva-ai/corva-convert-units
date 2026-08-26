@@ -279,7 +279,7 @@
         "display": "gal/min"
       },
       "to_anchor": 2.1333333333333333,
-      "aliases": ["gal/min", "gal_per_min"]
+      "aliases": ["gal/min", "gal_per_min", "galUS/min", "galus/min", "GPM", "gpm"]
     },
     "gal/h": {
       "name": {
