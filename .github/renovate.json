@@ -4,7 +4,8 @@
     "github>corva-ai/corva-renovate//presets/schedule",
     "github>corva-ai/corva-renovate//presets/settings",
     "github>corva-ai/corva-renovate//presets/labels",
-    "github>corva-ai/corva-renovate//presets/github-actions"
+    "github>corva-ai/corva-renovate//presets/github-actions",
+    "github>corva-ai/corva-renovate//presets/python"
   ],
   "dependencyDashboardApproval": true
 }
