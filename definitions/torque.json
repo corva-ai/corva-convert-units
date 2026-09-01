@@ -36,7 +36,7 @@
         "display": "ft-lbf"
       },
       "to_anchor": 1,
-      "aliases": ["ft-lbf"]
+      "aliases": ["ft-lbf", "ft-lbs"]
     },
     "ft-klbf": {
       "name": {
@@ -45,7 +45,7 @@
         "display": "ft-klbf"
       },
       "to_anchor": 1000,
-      "aliases": ["ft-klbf"]
+      "aliases": ["ft-klbf", "Kft-lbs", "kft-lbs"]
     }
   },
   "_anchors": {
