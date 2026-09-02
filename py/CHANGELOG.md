@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.0](https://github.com/corva-ai/corva-convert-units/compare/py@v3.1.3...py@v3.2.0) (2026-09-02)
+
+
+### Features
+
+* STM-2481 | Add torque/energy aliases ([#135](https://github.com/corva-ai/corva-convert-units/issues/135)) ([1b2612b](https://github.com/corva-ai/corva-convert-units/commit/1b2612b4de300476825e838e00aebc3d5fbf931b))
+
 ## [3.1.3](https://github.com/corva-ai/corva-convert-units/compare/py@v3.1.2...py@v3.1.3) (2026-08-05)
 
 
