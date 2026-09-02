@@ -206,9 +206,12 @@
     "J",
     "ft-lbf",
     "ft.lbf",
+    "ft-lbs",
     "ft-klbf",
     "kft-lbf",
-    "ft.klbf"
+    "ft.klbf",
+    "Kft-lbs",
+    "kft-lbs"
   ],
   "Voltage": [
     "V",
