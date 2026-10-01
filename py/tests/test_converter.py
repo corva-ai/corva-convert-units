@@ -127,6 +127,10 @@ class TestAliasResolution:
     def test_alias_in_conversion(self):
         assert convert(1, "meter", "ft") == pytest.approx(3.28084, abs=1e-4)
 
+    def test_tons_alias_to_ton(self):
+        assert convert(1, "tons", "ton", measure="mass") == 1
+        assert convert(185.11, "klbs", "tons", measure="mass") == pytest.approx(83.9644, abs=1e-4)
+
     @pytest.mark.parametrize("measure", ["energy", "torque"])
     def test_foot_pound_aliases(self, measure):
         assert convert(1, "ft-lbs", "ft-lbf", measure=measure) == 1
