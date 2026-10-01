@@ -127,6 +127,12 @@ describe('alias resolution', () => {
     expect(convert(1, 'meter', 'ft')).toBeCloseTo(3.28084, 4);
   });
 
+  it('resolves "tons" alias to "ton" (mass)', () => {
+    expect(convert(1, 'tons', 'ton', 'mass')).toBe(1);
+    expect(convert(185.11, 'klbs', 'tons', 'mass')).toBeCloseTo(83.9644, 4);
+    expect(getUnitKeyByAlias('tons')).toBe('ton');
+  });
+
   it('getUnitKeyByAlias resolves known alias', () => {
     expect(getUnitKeyByAlias('meter')).toBe('m');
   });
