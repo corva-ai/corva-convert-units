@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.0](https://github.com/corva-ai/corva-convert-units/compare/py@v3.2.0...py@v3.3.0) (2026-10-01)
+
+
+### Features
+
+* STM-2612 | Add tons alias tests ([#138](https://github.com/corva-ai/corva-convert-units/issues/138)) ([9b541e7](https://github.com/corva-ai/corva-convert-units/commit/9b541e78ec7f2f124b0bfe29291454ec592a8294))
+
 ## [3.2.0](https://github.com/corva-ai/corva-convert-units/compare/py@v3.1.3...py@v3.2.0) (2026-09-02)
 
 
